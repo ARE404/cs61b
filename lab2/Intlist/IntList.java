@@ -88,6 +88,9 @@ public class IntList {
 //        p.rest=B;
 //        return A;
         IntList p=A;
+        if(A==null){
+            return B;
+        }
         while(A.rest!=null){
             A=A.rest;
         }
