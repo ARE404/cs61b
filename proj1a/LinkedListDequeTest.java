@@ -100,10 +100,20 @@ public class LinkedListDequeTest {
         printTestStatus(passed);
     }
 
+    public static void test() {
+        ArrayDeque<Integer> testlist = new ArrayDeque<Integer>();
+        testlist.addLast(0);
+        testlist.addLast(1);
+        testlist.removeFirst();
+        testlist.isEmpty();
+        testlist.removeFirst();
+    }
+
     public static void main(String[] args) {
         System.out.println("Running tests.\n");
-//		addIsEmptySizeTest();
-//		addRemoveTest();
+//addIsEmptySizeTest();
+//addRemoveTest();
+        test();
         getRecursiveTest();
     }
 }

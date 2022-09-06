@@ -32,10 +32,10 @@ public class ArrayDeque<T> {
     }
 
     public void addFirst(T itemAdded) {
-        if (this.size + 1 > this.item.length) {
+        if (this.size == this.item.length) {
             resize(this.size * 2);
         }
-        for (int index = this.size - 1; index >= 0; index -= 1) {
+        for (int index = this.size - 2; index >= 0; index -= 1) {
             this.item[index + 1] = this.item[index];
         }
         this.item[0] = itemAdded;
@@ -43,7 +43,7 @@ public class ArrayDeque<T> {
     }
 
     public void addLast(T itemAdded) {
-        if (this.size + 1 > this.item.length) {
+        if (this.size == this.item.length) {
             resize(this.size * 2);
         }
         this.item[this.size] = itemAdded;
@@ -71,7 +71,7 @@ public class ArrayDeque<T> {
             return null;
         }
         T returnItem = this.item[0];
-        for (int i = 0; i < size; i += 1) {
+        for (int i = 0; i < size - 1; i += 1) {
             this.item[i] = this.item[i + 1];
         }
         this.item[size - 1] = null;
