@@ -14,38 +14,38 @@ public class ArrayDeque<T> {
         this.size = other.size;
     }
 
-    public void computeUseRate() {
+    private void computeUseRate() {
         this.useRate = this.size / this.item.length;
     }
-    public void resize(int capacity) {
+    private void resize(int capacity) {
         T[] newArray = (T[]) new Object[capacity];
         System.arraycopy(this.item, 0, newArray, 0, this.size);
         this.item = newArray;
     }
 
-    public void shrink() {
+    private void shrink() {
         computeUseRate();
         if (this.useRate < 0.25) {
             resize(this.item.length / 2);
         }
     }
 
-    public void addFirst(T item) {
+    public void addFirst(T itemAdded) {
         if (this.size + 1 > this.item.length) {
             resize(this.size * 2);
         }
-        for (int index = this.size - 1; index >= 0 ; index -= 1) {
+        for (int index = this.size - 1; index >= 0; index -= 1) {
             this.item[index + 1] = this.item[index];
         }
-        this.item[0] = item;
+        this.item[0] = itemAdded;
         this.size += 1;
     }
 
-    public void addLast(T item) {
+    public void addLast(T itemAdded) {
         if (this.size + 1 > this.item.length) {
             resize(this.size * 2);
         }
-        this.item[this.size - 1] = item;
+        this.item[this.size - 1] = itemAdded;
         this.size += 1;
     }
 

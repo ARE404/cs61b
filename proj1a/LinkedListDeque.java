@@ -1,9 +1,7 @@
-import java.awt.*;
-
 public class LinkedListDeque<T> {
     private class DequeNode {
-        public T item;
-        public DequeNode prev, next;
+        private T item;
+        private DequeNode prev, next;
 
         public DequeNode(T x) {
             item = x;
@@ -18,11 +16,11 @@ public class LinkedListDeque<T> {
         }
     }
 
-    public DequeNode sentinel;
+    private DequeNode sentinel;
     private int size;
 
     public LinkedListDeque() {
-        sentinel = new DequeNode( null);
+        sentinel = new DequeNode(null);
         sentinel.next = sentinel;
         sentinel.prev = sentinel;
         size = 0;
@@ -30,21 +28,12 @@ public class LinkedListDeque<T> {
 
     /** Create a deep copy of other */
     public LinkedListDeque(LinkedListDeque other) {
-//        if (other.isEmpty()) {
-//            sentinel = new DequeNode( null, null, null);
-//            size = 0;
-//            return;
-//        }
-//        sentinel = new DequeNode(null, other.sentinel.prev, other.sentinel.next);
-//        size = other.size;
-//        DequeNode p = other.sentinel.next;
-//        while (p != null) {
-//            this.addLast(p.item);
-//            p = p.next;
-//        }
-        sentinel = new DequeNode(null, sentinel, sentinel);
+        sentinel = new DequeNode(null);
+        sentinel.prev = sentinel;
+        sentinel.next = sentinel;
         size = 0;
-        for(int i = 0; i < other.size; i+=1) {
+
+        for (int i = 0; i < other.size; i += 1) {
             this.addLast((T) other.get(i));
         }
     }
@@ -90,7 +79,8 @@ public class LinkedListDeque<T> {
     }
 
     /**
-     * Print every item in list from first to last, separated by a space, once all printed add a new line
+     * Print every item in list from first to last, separated by a space,
+     * once all printed add a new line
      */
     public void printDeque() {
         DequeNode p = sentinel;
