@@ -15,12 +15,13 @@ public class ArrayDeque<T> {
 //    }
 
     private void computeUseRate() {
-        this.useRate = this.size / this.item.length;
+        this.useRate = ((double) this.size) / this.item.length;
     }
     private void resize(int capacity) {
         T[] newArray = (T[]) new Object[capacity];
         System.arraycopy(this.item, 0, newArray, 0, this.size);
         this.item = newArray;
+        this.size = capacity;
     }
 
     private void shrink() {
@@ -94,9 +95,5 @@ public class ArrayDeque<T> {
             return null;
         }
         return this.item[index];
-    }
-
-    public T getRecursive(int index) {
-        return null;
     }
 }
