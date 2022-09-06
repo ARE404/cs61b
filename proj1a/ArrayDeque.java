@@ -21,7 +21,6 @@ public class ArrayDeque<T> {
         T[] newArray = (T[]) new Object[capacity];
         System.arraycopy(this.item, 0, newArray, 0, this.size);
         this.item = newArray;
-        this.size = capacity;
     }
 
     private void shrink() {
@@ -35,7 +34,7 @@ public class ArrayDeque<T> {
         if (this.size == this.item.length) {
             resize(this.size * 2);
         }
-        for (int index = this.size - 2; index >= 0; index -= 1) {
+        for (int index = this.size - 1; index >= 0; index -= 1) {
             this.item[index + 1] = this.item[index];
         }
         this.item[0] = itemAdded;
