@@ -101,27 +101,19 @@ public class LinkedListDequeTest {
     }
 
     public static void test() {
-        ArrayDeque<Integer> testlist = new ArrayDeque<Integer>();
-//        testlist.addFirst(0);
-//        testlist.get(0) ;
-//        testlist.removeLast() ;
-//        testlist.addLast(3);
-//        testlist.addFirst(4);
-//        testlist.removeLast() ;
-//        testlist.removeLast() ;
-//        testlist.addLast(7);
-//        testlist.addLast(8);
-//        testlist.removeLast() ;
-//        testlist.addLast(10);
-//        testlist.removeFirst();
-//        testlist.removeLast()  ;
-//        testlist.addLast(13);
-//        testlist.addFirst(14);
-//        testlist.removeLast()  ;
-//        testlist.removeLast()  ;
-//        testlist.addFirst(17);
-//        testlist.removeLast()  ;
-//        testlist.addLast(19);
+//        ArrayDeque<Integer> testlist = new ArrayDeque<Integer>();
+        LinkedListDeque<Integer> testlist = new LinkedListDeque<>();
+        testlist.addLast(1);
+        testlist.addFirst(2);
+        testlist.removeFirst()     ;
+        testlist.removeLast()     ;
+        testlist.addLast(5);
+        testlist.addLast(6);
+        testlist.removeLast()    ;
+        testlist.getRecursive(0);
+        testlist.addLast(9);
+        testlist.getRecursive(1);
+        testlist.getRecursive(0);
 
     }
 

@@ -139,12 +139,20 @@ public class LinkedListDeque<T> {
         }
     }
 
+    public T helper(DequeNode n, int index) {
+        if (index == 0) {
+            return n.item;
+        } else {
+            return helper(n.next, index - 1);
+        }
+    }
+
     /** get but recursive version */
     public T getRecursive(int index) {
-        if (index == 0) {
-            return sentinel.next.item;
+        if (this.size == 0 || index >= this.size) {
+            return null;
+        } else {
+            return helper(this.sentinel.next, index);
         }
-        this.removeFirst();
-        return getRecursive(index - 1);
     }
 }
