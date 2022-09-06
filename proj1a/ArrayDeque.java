@@ -25,7 +25,7 @@ public class ArrayDeque<T> {
 
     private void shrink() {
         computeUseRate();
-        if (this.useRate < 0.25) {
+        if (this.useRate < 0.25 && this.item.length > 8) {
             resize(this.item.length / 2);
         }
     }
