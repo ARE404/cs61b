@@ -27,16 +27,16 @@ public class LinkedListDeque<T> {
     }
 
     /** Create a deep copy of other */
-    public LinkedListDeque(LinkedListDeque other) {
-        sentinel = new DequeNode(null);
-        sentinel.prev = sentinel;
-        sentinel.next = sentinel;
-        size = 0;
-
-        for (int i = 0; i < other.size; i += 1) {
-            this.addLast((T) other.get(i));
-        }
-    }
+//    public LinkedListDeque(LinkedListDeque other) {
+//        sentinel = new DequeNode(null);
+//        sentinel.prev = sentinel;
+//        sentinel.next = sentinel;
+//        size = 0;
+//
+//        for (int i = 0; i < other.size; i += 1) {
+//            this.addLast((T) other.get(i));
+//        }
+//    }
 
     /**
      * Add an item of type T in front of deque.

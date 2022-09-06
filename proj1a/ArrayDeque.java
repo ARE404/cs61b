@@ -8,11 +8,11 @@ public class ArrayDeque<T> {
         size = 0;
     }
 
-    public ArrayDeque(ArrayDeque other) {
-        this.item = (T[]) new Object[other.size];
-        System.arraycopy(other.item, 0, this.item, 0, other.size - 1);
-        this.size = other.size;
-    }
+//    public ArrayDeque(ArrayDeque other) {
+//        this.item = (T[]) new Object[other.size];
+//        System.arraycopy(other.item, 0, this.item, 0, other.size - 1);
+//        this.size = other.size;
+//    }
 
     private void computeUseRate() {
         this.useRate = this.size / this.item.length;
@@ -45,7 +45,7 @@ public class ArrayDeque<T> {
         if (this.size + 1 > this.item.length) {
             resize(this.size * 2);
         }
-        this.item[this.size - 1] = itemAdded;
+        this.item[this.size] = itemAdded;
         this.size += 1;
     }
 
@@ -94,5 +94,9 @@ public class ArrayDeque<T> {
             return null;
         }
         return this.item[index];
+    }
+
+    public T getRecursive(int index) {
+        return null;
     }
 }
