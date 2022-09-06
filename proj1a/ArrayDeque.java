@@ -85,6 +85,7 @@ public class ArrayDeque<T> {
         }
         T returnItem = this.item[size - 1];
         this.item[size - 1] = null;
+        this.size -= 1;
         shrink();
         return returnItem;
     }
