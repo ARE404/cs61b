@@ -139,7 +139,7 @@ public class LinkedListDeque<T> {
         }
     }
 
-    public T helper(DequeNode n, int index) {
+    private T helper(DequeNode n, int index) {
         if (index == 0) {
             return n.item;
         } else {
