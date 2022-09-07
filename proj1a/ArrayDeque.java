@@ -1,22 +1,23 @@
 public class ArrayDeque<T> {
-    private T[] item;
+    private T[] array;
     private int size;
     private double useRate = 0.0;
     /** start index of array */
-    private int startindex;
+    private int prevFirst;
     /** end index of array */
-    private int endindex;
+    private int nextLast;
+
 
     public ArrayDeque() {
-        item = (T[]) new Object[8];
-        startindex = 0;
-        endindex = 0;
+        array = (T[]) new Object[8];
+        prevFirst = array.length / 2;
+        nextLast = prevFirst + 1;
         size = 0;
     }
 
 //    public ArrayDeque(ArrayDeque other) {
-//        this.item = (T[]) new Object[other.size];
-//        System.arraycopy(other.item, 0, this.item, 0, other.size - 1);
+//        this.array = (T[]) new Object[other.size];
+//        System.arraycopy(other.array, 0, this.array, 0, other.size - 1);
 //        this.size = other.size;
 //    }
 
@@ -25,48 +26,56 @@ public class ArrayDeque<T> {
         if (index > 0) {
             return index - 1;
         } else {
-            return index + item.length - 1;
+            return index + array.length - 1;
         }
     }
 
     private int nextIndex(int index) {
-        if (index < item.length - 1) {
+        if (index < array.length - 1) {
             return index + 1;
         } else {
-            return index - item.length + 1;
+            return index - array.length + 1;
         }
+    }
+
+    private int first() {
+        return nextIndex(prevFirst);
+    }
+
+    private int last() {
+        return prevIndex(nextLast);
     }
     private void resize(int capacity) {
         T[] newArray = (T[]) new Object[capacity];
-        int index_p = startindex;
-        for (int i = 0; index_p != endindex; index_p = nextIndex(index_p)) {
-            newArray[i] = this.item[index_p];
+        int indexP = first();
+        for (int i = 0; indexP != last(); indexP = nextIndex(indexP)) {
+            newArray[i] = this.array[indexP];
         }
-        this.item = newArray;
+        this.array = newArray;
     }
 
     private void shrink() {
-        useRate = ((double) size) / item.length;
-        if (this.useRate < 0.25 && this.item.length > 8) {
-            resize(this.item.length / 2);
+        useRate = ((double) size) / array.length;
+        if (this.useRate < 0.25 && this.array.length > 8) {
+            resize(this.array.length / 2);
         }
     }
 
-    public void addFirst(T itemAdded) {
-        if (this.size == this.item.length) {
+    public void addFirst(T arrayAdded) {
+        if (this.size == this.array.length) {
             resize(this.size * 2);
         }
-        startindex = prevIndex(startindex);
-        item[startindex] = itemAdded;
+        array[prevFirst] = arrayAdded;
+        prevFirst = prevIndex(prevFirst);
         this.size += 1;
     }
 
-    public void addLast(T itemAdded) {
-        if (this.size == this.item.length) {
+    public void addLast(T arrayAdded) {
+        if (this.size == this.array.length) {
             resize(this.size * 2);
         }
-        endindex = nextIndex(endindex);
-        item[endindex] = itemAdded;
+        array[nextLast] = arrayAdded;
+        nextLast = nextIndex(nextLast);
         this.size += 1;
     }
 
@@ -79,8 +88,8 @@ public class ArrayDeque<T> {
     }
 
     public void printDeque() {
-        for (int i = startindex; i != endindex; i = nextIndex(i)) {
-            System.out.print(this.item[i]);
+        for (int i = first(); i != last(); i = nextIndex(i)) {
+            System.out.print(this.array[i]);
             System.out.print(" ");
         }
         System.out.println();
@@ -90,9 +99,9 @@ public class ArrayDeque<T> {
         if (isEmpty()) {
             return null;
         }
-        T returnItem = this.item[startindex];
-        item[startindex] = null;
-        startindex = nextIndex(startindex);
+        T returnItem = this.array[first()];
+        array[first()] = null;
+        prevFirst = first();
         this.size -= 1;
         shrink();
         return returnItem;
@@ -102,9 +111,9 @@ public class ArrayDeque<T> {
         if (isEmpty()) {
             return null;
         }
-        T returnItem = this.item[endindex];
-        this.item[endindex] = null;
-        endindex = prevIndex(endindex);
+        T returnItem = this.array[last()];
+        this.array[last()] = null;
+        nextLast = last();
         this.size -= 1;
         shrink();
         return returnItem;
@@ -114,6 +123,12 @@ public class ArrayDeque<T> {
         if (isEmpty()) {
             return null;
         }
-        return this.item[index];
+
+//        if (prevFirst + index > array.length - 1) {
+//            return array[prevFirst + index - array.length];
+//        } else {
+//            return this.array[prevFirst + index];
+//        }
+        return array[(first() + index) % array.length];
     }
 }
