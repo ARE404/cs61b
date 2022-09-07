@@ -48,9 +48,12 @@ public class ArrayDeque<T> {
     private void resize(int capacity) {
         T[] newArray = (T[]) new Object[capacity];
         int indexP = first();
-        for (int i = 0; indexP != last(); indexP = nextIndex(indexP)) {
+        for (int i = 0; indexP != nextLast; i += 1) {
             newArray[i] = this.array[indexP];
+            indexP = nextIndex(indexP);
         }
+        prevFirst = capacity - 1;
+        nextLast = size;
         this.array = newArray;
     }
 
@@ -62,7 +65,7 @@ public class ArrayDeque<T> {
     }
 
     public void addFirst(T arrayAdded) {
-        if (this.size == this.array.length) {
+        if (this.size >= this.array.length - 1) {
             resize(this.size * 2);
         }
         array[prevFirst] = arrayAdded;
@@ -71,7 +74,7 @@ public class ArrayDeque<T> {
     }
 
     public void addLast(T arrayAdded) {
-        if (this.size == this.array.length) {
+        if (this.size == this.array.length - 1) {
             resize(this.size * 2);
         }
         array[nextLast] = arrayAdded;

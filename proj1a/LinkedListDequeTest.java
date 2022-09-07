@@ -102,12 +102,28 @@ public class LinkedListDequeTest {
 
     public static void test() {
 //        ArrayDeque<Integer> testlist = new ArrayDeque<Integer>();
-//////        LinkedListDeque<Integer> testlist = new LinkedListDeque<>();
 //        testlist.addFirst(0);
-//        testlist.addFirst(1);
+//        testlist.addLast(1);
 //        testlist.addFirst(2);
-//        testlist.removeLast()     ;
-
+//        testlist.addFirst(3);
+//        testlist.addFirst(4);
+//        testlist.get(2)      ;
+//        testlist.addFirst(6);
+//        testlist.removeLast()      ;
+//        testlist.removeLast()      ;
+//        testlist.removeLast()      ;
+//        testlist.addLast(10);
+//        testlist.addLast(11);
+//        testlist.addLast(12);
+//        testlist.addFirst(13);
+//        testlist.addFirst(14);
+//        testlist.get(5)      ;
+//        testlist.addLast(16);
+//        testlist.addLast(17);
+//        testlist.addLast(18);
+//        testlist.removeLast()      ;
+//        testlist.addFirst(20);
+//        testlist.get(2)      ;
     }
 
     public static void main(String[] args) {
