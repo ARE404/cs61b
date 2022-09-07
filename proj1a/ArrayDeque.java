@@ -2,9 +2,15 @@ public class ArrayDeque<T> {
     private T[] item;
     private int size;
     private double useRate = 0.0;
+    /** start index of array */
+    private int startindex;
+    /** end index of array */
+    private int endindex;
 
     public ArrayDeque() {
         item = (T[]) new Object[8];
+        startindex = 0;
+        endindex = 0;
         size = 0;
     }
 
@@ -14,17 +20,33 @@ public class ArrayDeque<T> {
 //        this.size = other.size;
 //    }
 
-    private void computeUseRate() {
-        this.useRate = ((double) this.size) / this.item.length;
+
+    private int prevIndex(int index) {
+        if (index > 0) {
+            return index - 1;
+        } else {
+            return index + item.length - 1;
+        }
+    }
+
+    private int nextIndex(int index) {
+        if (index < item.length - 1) {
+            return index + 1;
+        } else {
+            return index - item.length + 1;
+        }
     }
     private void resize(int capacity) {
         T[] newArray = (T[]) new Object[capacity];
-        System.arraycopy(this.item, 0, newArray, 0, this.size);
+        int index_p = startindex;
+        for (int i = 0; index_p != endindex; index_p = nextIndex(index_p)) {
+            newArray[i] = this.item[index_p];
+        }
         this.item = newArray;
     }
 
     private void shrink() {
-        computeUseRate();
+        useRate = ((double) size) / item.length;
         if (this.useRate < 0.25 && this.item.length > 8) {
             resize(this.item.length / 2);
         }
@@ -34,10 +56,8 @@ public class ArrayDeque<T> {
         if (this.size == this.item.length) {
             resize(this.size * 2);
         }
-        for (int index = this.size - 1; index >= 0; index -= 1) {
-            this.item[index + 1] = this.item[index];
-        }
-        this.item[0] = itemAdded;
+        startindex = prevIndex(startindex);
+        item[startindex] = itemAdded;
         this.size += 1;
     }
 
@@ -45,7 +65,8 @@ public class ArrayDeque<T> {
         if (this.size == this.item.length) {
             resize(this.size * 2);
         }
-        this.item[this.size] = itemAdded;
+        endindex = nextIndex(endindex);
+        item[endindex] = itemAdded;
         this.size += 1;
     }
 
@@ -58,7 +79,7 @@ public class ArrayDeque<T> {
     }
 
     public void printDeque() {
-        for (int i = 0; i < size; i += 1) {
+        for (int i = startindex; i != endindex; i = nextIndex(i)) {
             System.out.print(this.item[i]);
             System.out.print(" ");
         }
@@ -69,11 +90,9 @@ public class ArrayDeque<T> {
         if (isEmpty()) {
             return null;
         }
-        T returnItem = this.item[0];
-        for (int i = 0; i < size - 1; i += 1) {
-            this.item[i] = this.item[i + 1];
-        }
-        this.item[size - 1] = null;
+        T returnItem = this.item[startindex];
+        item[startindex] = null;
+        startindex = nextIndex(startindex);
         this.size -= 1;
         shrink();
         return returnItem;
@@ -83,8 +102,9 @@ public class ArrayDeque<T> {
         if (isEmpty()) {
             return null;
         }
-        T returnItem = this.item[size - 1];
-        this.item[size - 1] = null;
+        T returnItem = this.item[endindex];
+        this.item[endindex] = null;
+        endindex = prevIndex(endindex);
         this.size -= 1;
         shrink();
         return returnItem;
