@@ -4,18 +4,20 @@ import java.util.Formatter;
  * A naked recursive list of integers, similar to what we saw in lecture 3, but
  * with a large number of additional methods.
  *
- * @author P. N. Hilfinger, with some modifications by Josh Hug and melaniecebula
+ * @author  P. N. Hilfinger,
+ *          with some modifications by Josh Hug and melaniecebula
+ *
  * [Do not modify this file.]
  */
 public class IntList {
     /**
      * First element of list.
      */
-    public int first;
+    private int first;
     /**
      * Remaining elements of list.
      */
-    public IntList rest;
+    private IntList rest;
 
     /**
      * A List with first FIRST0 and rest REST0.
@@ -80,13 +82,6 @@ public class IntList {
      */
 
     public static IntList dcatenate(IntList A, IntList B) {
-        //TODO:  fill in method
-//        IntList p=A;
-//        while(p.rest!=null){
-//            p=p.rest;
-//        }
-//        p.rest=B;
-//        return A;
         IntList p = A;
         if (A == null) {
             return B;
@@ -103,7 +98,6 @@ public class IntList {
      * * elements of B.  May NOT modify items of A.  Use 'new'.
      */
     public static IntList catenate(IntList A, IntList B) {
-        //TODO:  fill in method
         if (A == null) {
             return B;
         }
@@ -115,16 +109,34 @@ public class IntList {
             res = res.rest;
             ptr = ptr.rest;
         }
-//        ptr=B;
-//        while(ptr!=null){
-//            res.rest=new IntList(ptr.first, null);
-//            res=res.rest;
-//            ptr=ptr.rest;
-//        }
         res.rest = B;
         return rlist;
     }
 
+    /**
+     * Reverse IntList L.
+     * @param L input list
+     * @return  return an IntList
+     */
+    public static IntList reverse(IntList L) {
+        return reverseHelper(L);
+    }
+
+    /**
+     * Helper method for reverse.
+     * @param L input list
+     * @return  return a IntList
+     */
+    private static IntList reverseHelper(IntList L) {
+        if (L == null || L.rest == null) {
+            return L;
+        } else {
+            IntList reversed = reverseHelper(L.rest);
+            L.rest.rest = L;
+            L.rest = null;
+            return reversed;
+        }
+    }
 
     /**
      * DO NOT MODIFY ANYTHING BELOW THIS LINE! Many of the concepts below here
@@ -193,6 +205,11 @@ public class IntList {
      * doesn't get stuck in an infinite loop.
      */
 
+    /**
+     *
+     * @param A
+     * @return
+     */
     private int detectCycles(IntList A) {
         IntList tortoise = A;
         IntList hare = A;
