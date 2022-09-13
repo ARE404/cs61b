@@ -41,7 +41,7 @@ public class TestPalindrome {
         assertFalse(palindrome.isPalindrome("aaaa", cc));
         assertFalse(palindrome.isPalindrome("AAAAA", cc));
         assertFalse(palindrome.isPalindrome("Aa", cc));
-        assertFalse(palindrome.isPalindrome("13",cc));
-        assertFalse(palindrome.isPalindrome("11111",cc));
+        assertFalse(palindrome.isPalindrome("13", cc));
+        assertFalse(palindrome.isPalindrome("11111", cc));
     }
 }
