@@ -19,28 +19,24 @@ public class TestArrayDequeGold {
                     l1.addFirst(randomNum);
                     l0.addFirst(randomNum);
                     errorMessage += "addFirst(" + randomNum + ")\n";
-                    assertEquals(errorMessage, l0.toString(), l1.toString());
+                    assertEquals(errorMessage, l0.get(0), l1.get(0));
                     break;
                 case 2:
                     l0.addLast(randomNum);
                     l1.addLast(randomNum);
                     errorMessage += "addLast(" + randomNum + ")\n";
-                    assertEquals(errorMessage, l0.toString(), l1.toString());
+                    assertEquals(errorMessage, l0.get(l0.size() - 1), l1.get(l1.size() - 1));
                     break;
                 case 3:
                     if (l0.size() > 0 && l1.size() > 0) {
-                        l0.removeFirst();
-                        l1.removeFirst();
-                        errorMessage += "removeFirst";
-                        assertEquals(errorMessage, l0.toString(), l1.toString());
+                        errorMessage += "removeFirst()\n";
+                        assertEquals(errorMessage, l0.removeFirst(), l1.removeFirst());
                     }
                     break;
                 case 4:
                     if (l0.size() > 0 && l1.size() > 0) {
-                        l0.removeLast();
-                        l1.removeLast();
-                        errorMessage += "removeLast";
-                        assertEquals(errorMessage, l0.toString(), l1.toString());
+                        errorMessage += "removeLast()\n";
+                        assertEquals(errorMessage, l0.removeLast(), l1.removeLast());
                     }
                     break;
             }
