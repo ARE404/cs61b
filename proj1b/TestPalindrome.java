@@ -30,6 +30,7 @@ public class TestPalindrome {
     public void testNewIsPalindrome() {
         CharacterComparator cc = new OffByOne();
         assertTrue(palindrome.isPalindrome("abab", cc));
+        assertTrue(palindrome.isPalindrome("", cc));
         assertTrue(palindrome.isPalindrome("&&%%", cc));
         assertTrue(palindrome.isPalindrome("z{", cc));
         assertTrue(palindrome.isPalindrome("12", cc));
