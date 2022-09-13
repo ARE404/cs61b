@@ -134,12 +134,13 @@ public class ArrayDeque<T> implements Deque<T>{
         if (isEmpty()) {
             return null;
         }
-
-//        if (prevFirst + index > array.length - 1) {
-//            return array[prevFirst + index - array.length];
-//        } else {
-//            return this.array[prevFirst + index];
-//        }
+        /*
+        if (prevFirst + index > array.length - 1) {
+            return array[prevFirst + index - array.length];
+        } else {
+            return this.array[prevFirst + index];
+        }
+         */
         return array[(first() + index) % array.length];
     }
 }
