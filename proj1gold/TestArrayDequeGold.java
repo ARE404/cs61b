@@ -25,7 +25,7 @@ public class TestArrayDequeGold {
                     l0.addLast(randomNum);
                     l1.addLast(randomNum);
                     errorMessage += "addLast(" + randomNum + ")\n";
-                    assertEquals(errorMessage, l0.get(l0.size() - 1), l1.get(l1.size() - 1));
+                    assertEquals(errorMessage, l0.getLast(), l1.get(l1.size() - 1));
                     break;
                 case 3:
                     if (l0.size() > 0 && l1.size() > 0) {
