@@ -11,7 +11,7 @@ public class TestArrayDequeGold {
         StudentArrayDeque<Integer> l1 = new StudentArrayDeque<>();
         String errorMessage = new String("\n");
 
-        for (int i = 0; i < 10; i += 1) {
+        for (int i = 0; i < 1000; i += 1) {
             int var = StdRandom.discrete(IntStream.range(1, 6).toArray());
             int randomNum = StdRandom.discrete(IntStream.range(1, 51).toArray());
             switch (var) {
