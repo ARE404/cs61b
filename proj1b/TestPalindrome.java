@@ -18,12 +18,6 @@ public class TestPalindrome {
 
     @Test
     public void testIsPalindrome() {
-//        ArrayDeque<Character> d = new ArrayDeque<>();
-//        d.addLast('a');
-//        d.addLast('b');
-//        d.addLast('b');
-//        d.addLast('a');
-
         assertTrue(palindrome.isPalindrome("abba"));
         assertTrue(palindrome.isPalindrome("abcddcba"));
         assertTrue(palindrome.isPalindrome("a"));
@@ -37,5 +31,8 @@ public class TestPalindrome {
         CharacterComparator cc = new OffByOne();
         assertTrue(palindrome.isPalindrome("abab", cc));
         assertTrue(palindrome.isPalindrome("&&%%", cc));
+        assertTrue(palindrome.isPalindrome("z{", cc));
+        assertFalse(palindrome.isPalindrome("AaAa"));
+        assertFalse(palindrome.isPalindrome("Aa"));
     }
 }

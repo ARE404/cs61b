@@ -8,13 +8,7 @@ public class Palindrome {
         return l;
     }
 
-    public boolean helper(String word, int index) {
-//        if (word.length() % 2 == 0 && index == word.length() / 2 - 1) {
-//            return word.charAt(index) == word.charAt(index + 1);
-//        }
-//        if (word.length() % 2 != 0 && index == word.length() / 2) {
-//            return true;
-//        }
+    private boolean helper(String word, int index) {
         if (index > word.length() / 2) {
             return true;
         }
@@ -33,7 +27,7 @@ public class Palindrome {
         }
         int forwardIndex = 0;
         int backwardIndex = word.length() - 1;
-        while(forwardIndex < backwardIndex) {
+        while (forwardIndex < backwardIndex) {
             if (!cc.equalChars(word.charAt(forwardIndex), word.charAt(backwardIndex))) {
                 return false;
             }

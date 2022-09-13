@@ -1,8 +1,15 @@
-public class ArrayDeque<T> implements Deque<T>{
+/**
+ * Array implemented Deque.
+ * @param <T>
+ * @author bobzhang
+ */
+public class ArrayDeque<T> implements Deque<T> {
+    /** */
     private T[] array;
+    /** size of array. */
     private int size;
     private double useRate = 0.0;
-    /** start index of array */
+    /** start index of array. */
     private int prevFirst;
     /** end index of array */
     private int nextLast;
@@ -15,13 +22,7 @@ public class ArrayDeque<T> implements Deque<T>{
         size = 0;
     }
 
-//    public ArrayDeque(ArrayDeque other) {
-//        this.array = (T[]) new Object[other.size];
-//        System.arraycopy(other.array, 0, this.array, 0, other.size - 1);
-//        this.size = other.size;
-//    }
-
-
+    /** Get previous index in a loop view array */
     private int prevIndex(int index) {
         if (index > 0) {
             return index - 1;
@@ -30,6 +31,7 @@ public class ArrayDeque<T> implements Deque<T>{
         }
     }
 
+    /** Get next index in a loop view array */
     private int nextIndex(int index) {
         if (index < array.length - 1) {
             return index + 1;
@@ -38,13 +40,17 @@ public class ArrayDeque<T> implements Deque<T>{
         }
     }
 
+    /** First index */
     private int first() {
         return nextIndex(prevFirst);
     }
 
+    /** Last index */
     private int last() {
         return prevIndex(nextLast);
     }
+
+    /** Resize array, new size is capacity */
     private void resize(int capacity) {
         T[] newArray = (T[]) new Object[capacity];
         int indexP = first();
@@ -57,6 +63,7 @@ public class ArrayDeque<T> implements Deque<T>{
         this.array = newArray;
     }
 
+    /** If useRate is below 25%, resize array to half size. */
     private void shrink() {
         useRate = ((double) size) / array.length;
         if (this.useRate < 0.25 && this.array.length > 8) {
@@ -64,6 +71,7 @@ public class ArrayDeque<T> implements Deque<T>{
         }
     }
 
+    /** Add to the beginning of array. */
     @Override
     public void addFirst(T arrayAdded) {
         if (this.size >= this.array.length - 1) {
@@ -134,13 +142,6 @@ public class ArrayDeque<T> implements Deque<T>{
         if (isEmpty()) {
             return null;
         }
-        /*
-        if (prevFirst + index > array.length - 1) {
-            return array[prevFirst + index - array.length];
-        } else {
-            return this.array[prevFirst + index];
-        }
-         */
         return array[(first() + index) % array.length];
     }
 }
