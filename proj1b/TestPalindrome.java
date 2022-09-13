@@ -32,7 +32,13 @@ public class TestPalindrome {
         assertTrue(palindrome.isPalindrome("abab", cc));
         assertTrue(palindrome.isPalindrome("&&%%", cc));
         assertTrue(palindrome.isPalindrome("z{", cc));
-        assertFalse(palindrome.isPalindrome("AaAa"));
-        assertFalse(palindrome.isPalindrome("Aa"));
+        assertTrue(palindrome.isPalindrome("12", cc));
+        assertTrue(palindrome.isPalindrome("-.", cc));
+        assertFalse(palindrome.isPalindrome("AaAa", cc));
+        assertFalse(palindrome.isPalindrome("aaaa", cc));
+        assertFalse(palindrome.isPalindrome("AAAAA", cc));
+        assertFalse(palindrome.isPalindrome("Aa", cc));
+        assertFalse(palindrome.isPalindrome("13",cc));
+        assertFalse(palindrome.isPalindrome("11111",cc));
     }
 }
