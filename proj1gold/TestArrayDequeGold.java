@@ -1,8 +1,8 @@
 import org.junit.Test;
 
-import static org.junit.Assert.*;
-
 import java.util.stream.IntStream;
+
+import static org.junit.Assert.assertEquals;
 
 public class TestArrayDequeGold {
     @Test
