@@ -16,7 +16,21 @@ import java.util.Random;
 public class HexWorld {
     private static final int WIDTH = 60;
     private static final int HEIGHT = 30;
-    private static final int seed = 23479;
+    private static final long SEED = 2347989;
+    private static final Random RANDOM = new Random(SEED);
+
+    /** Generate a random TETile */
+    private TETile randomTile() {
+        int tileNum = RANDOM.nextInt(5);
+        switch (tileNum) {
+            case 0: return Tileset.FLOWER;
+            case 1: return Tileset.GRASS;
+            case 2: return Tileset.FLOOR;
+            case 3: return Tileset.MOUNTAIN;
+            case 4: return Tileset.SAND;
+            default: return Tileset.WALL;
+        }
+    }
 
     /**
      * Draw a single unit hexagon.
@@ -33,13 +47,13 @@ public class HexWorld {
         if (trX >= WIDTH || trY >= HEIGHT || length <= 0) {
             return;
         }
-        drawDownside(length, blX, blY, world);
-        drawUpside(length, trX, trY, world);
+        drawDownside(length, blX, blY, world, tile);
+        drawUpside(length, trX, trY, world, tile);
     }
 
     /** Default use Nothing Tile.   */
     public void addHexagon(int length, int blX, int blY, TETile[][] world) {
-        addHexagon(length, blX, blY, world, Tileset.NOTHING);
+        addHexagon(length, blX, blY, world, randomTile());
     }
 
 
@@ -51,14 +65,14 @@ public class HexWorld {
      * @param trY   top right y coordinate.
      * @param world  1   the world we need to draw.
      */
-    private static void drawUpside(int length, int trX, int trY, TETile[][] world) {
+    private static void drawUpside(int length, int trX, int trY, TETile[][] world, TETile tile) {
         int dx = length - 1;
         int startX = trX - dx;
         int endX = startX - length;
         //two for loop, use line by line scan method
         for (int i = trY; i > trY - length; i -= 1) {
             for (int j = startX; j > endX; j -= 1) {
-                world[j][i] = Tileset.WALL;
+                world[j][i] = tile;
             }
             startX += 1;
             endX -= 1;
@@ -90,14 +104,14 @@ public class HexWorld {
      * @param blY   bottom left y coordinate.
      * @param world  the world need to draw.
      */
-    private static void drawDownside(int length, int blX, int blY, TETile[][] world) {
+    private static void drawDownside(int length, int blX, int blY, TETile[][] world, TETile tile) {
         int dx = length - 1;
         int startX = blX + dx;
         int endX = startX + length;
         //two for loop, use line scan
         for (int i = blY; i < blY + length; i += 1) {
             for (int j = startX; j < endX; j += 1) {
-                world[j][i] = Tileset.WALL;
+                world[j][i] = tile;
             }
             startX -= 1;
             endX += 1;
