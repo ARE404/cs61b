@@ -19,10 +19,10 @@ public class HexWorld {
     private static final int HEIGHT = 60;
     private static final long SEED = 21234789;
     private static final Random RANDOM = new Random(SEED);
-    private static final int EXTEND_TIMES = 3;
+    private static final int EXTEND_TIMES = 2;
 
     /**
-     * Generate a random tile.
+     * Generate a random tile using RANDOM.nextInt method.
      */
     private TETile randomTile() {
         int tileNum = RANDOM.nextInt(8);
@@ -42,10 +42,11 @@ public class HexWorld {
     /**
      * Draw a single unit hexagon.
      *
-     * @param length Side length of the unit hexagon.
-     * @param blX   x position of the bottom left corner.
-     * @param blY   y position of the bottom left corner.
-     * @param world  the world we draw in.
+     * @param length    Side length of the unit hexagon.
+     * @param blX       x position of the bottom left corner.
+     * @param blY       y position of the bottom left corner.
+     * @param world     the world we draw in.
+     * @param tile      tile we use.
      */
     public void addHexagon(int length, int blX, int blY, TETile[][] world, TETile tile) {
         int trX = blX + length * 2 + (length - 2) - 1;  //bottom right x coordinate.
@@ -75,6 +76,9 @@ public class HexWorld {
         multiHexagonHelper(length, blX, blY, world, tile, EXTEND_TIMES);
     }
 
+    /**
+     *  overload version.
+     */
     public void addMultiHexagon(int length, int blX, int blY, TETile[][] world) {
         addMultiHexagon(length, blX, blY, world, randomTile());
     }
@@ -92,6 +96,7 @@ public class HexWorld {
         multiHexagonHelper(length, blX - 2 * length + 1, blY - length, world, tile, extendTimes - 1);
         //draw a hexagon in current pos
         addHexagon(length, blX, blY, world);
+        System.out.println("added a hexagon at" + blX + ", " + blY);
     }
 
     /**
@@ -187,7 +192,7 @@ public class HexWorld {
 
         //  make a HexWorld
         HexWorld w = new HexWorld();
-        w.addMultiHexagon(3, 25, 28, world);
+        w.addMultiHexagon(2, 25, 28, world);
 
         //  draws the world to the screen
         ter.renderFrame(world);

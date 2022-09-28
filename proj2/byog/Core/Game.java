@@ -2,12 +2,15 @@ package byog.Core;
 
 import byog.TileEngine.TERenderer;
 import byog.TileEngine.TETile;
+import byog.TileEngine.Tileset;
+import byog.lab5.HexWorld;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Game {
     TERenderer ter = new TERenderer();
-    /* Feel free to change the width and height. */
-    public static final int WIDTH = 80;
-    public static final int HEIGHT = 30;
+    private static Integer SEED = 0;
 
     /**
      * Method used for playing a fresh game. The game should start from the main menu.
@@ -32,7 +35,18 @@ public class Game {
         // and return a 2D tile representation of the world that would have been
         // drawn if the same inputs had been given to playWithKeyboard().
 
-        TETile[][] finalWorldFrame = null;
-        return finalWorldFrame;
+        System.out.println(input);
+
+        Pattern p = Pattern.compile("N(\\d+)S", Pattern.CASE_INSENSITIVE);
+        Matcher m = p.matcher(input);
+        if (!m.matches()) {
+            System.out.println("This input string is not valid! Retry!");
+            System.exit(1);
+        }
+        SEED = Integer.parseInt(m.group(1));
+
+        MapGenerator mp = new MapGenerator(SEED);
+
+        return mp.generateMap(60, 40);
     }
 }
