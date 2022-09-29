@@ -17,7 +17,7 @@ public class MapGenerator {
     private static int HEIGHT;
     private static final int BLOCK_WIDTH = 10;
     private static final int BLOCK_HEIGHT = 10;
-
+    private LinkedList<Point> blockPointList;
     private static class Room {
         private Point pos;
         private int length;
@@ -71,23 +71,13 @@ public class MapGenerator {
             }
         }
 
-        LinkedList<Point> points = computeBlockPoint(world);
-        for (Point p: points) {
+        blockPointList = computeBlockPoint(world);
+        for (Point p: blockPointList) {
             drawBlock(world, p);
         }
-//
-//        //generate and draw room list
-//        int roomNum = RandomUtils.uniform(RANDOM, Room.ROOM_NUM);
-//        System.out.println("roomNum:" + roomNum);
-//        LinkedList<Room> roomList = new LinkedList<>();
-//        for (int i = 0; i < roomNum; ++i) {
-//            int posX = RandomUtils.uniform(RANDOM, width);
-//            int posY = RandomUtils.uniform(RANDOM, height);
-//            int w = RandomUtils.uniform(RANDOM, Room.MIN_WIDTH, Room.MAX_WIDTH);
-//            int h = RandomUtils.uniform(RANDOM, Room.MIN_HEIGHT, Room.MAX_HEIGHT);
-//            System.out.println("" + posX + posY + w + h);
-//            drawRoom(world, new Room(new Point(posX, posY), w, h));
-//        }
+
+        removePublicWall(world);
+
 //
 //        //generate and draw hallway
 //        int hallwayNum = RANDOM.nextInt();
@@ -140,25 +130,48 @@ public class MapGenerator {
         int length = room.getLength();
         int topRightX = BottomLeftX + width;
         int topRightY = BottomLeftY + length;
-        if (topRightX > WIDTH || topRightY > HEIGHT) {
+        if (topRightX >= WIDTH || topRightY >= HEIGHT || BottomLeftX < 0 || BottomLeftY < 0) {
             return;
         }
+        System.out.println(BottomLeftX + " " + BottomLeftY);
         for (int i = 0; i < room.getWidth(); ++i) {
             for (int j = 0; j < room.getLength(); ++j) {
-                int posX = room.getPos().x + i;
-                int posY = room.getPos().y + j;
-                boolean blockEdge = i == 0 || j == 0 || i == width - 1 || j == length - 1;
-                boolean publicWall = (world[posX - 1][posY].equals(Tileset.FLOOR)
-                                    && world[posX + 1][posY].equals(Tileset.FLOOR))
-                                    || (world[posX][posY - 1].equals(Tileset.FLOOR)
-                                    && world[posX][posY + 1].equals(Tileset.FLOOR));
-                if (blockEdge) {
-                    if (world[posX][posY].equals(Tileset.WALL) && !(posX == 0 || posY == 0 || posX == WIDTH - 1 || posY == HEIGHT - 1) && publicWall) {
-                        world[posX][posY] = Tileset.FLOOR;
-                    }
-                    if (!world[posX][posY].equals(Tileset.FLOOR)) {
-                        world[posX][posY] = Tileset.WALL;
-                    }
+                int posX = BottomLeftX + i;
+                int posY = BottomLeftY + j;
+                boolean roomEdge = (i == 0 || j == 0 || i == width - 1 || j == length - 1);
+                // place wall
+//                if (roomEdge) {
+//                    boolean mapEdge = (posX == 0 || posY == 0 || posX == WIDTH - 1 || posY == WIDTH - 1);
+//                    boolean publicWall = false;
+//                    // wall conflict
+//                    // not map edge, consider public wall
+//                    if (!mapEdge) {
+//                        boolean isWall = world[posX][posY].equals(Tileset.WALL);
+//                        boolean horizontalPublicWall = world[posX][posY - 1].equals(Tileset.FLOOR)
+//                                && world[posX][posY + 1].equals(Tileset.FLOOR);
+//                        boolean verticalPublicWall = world[posX - 1][posY].equals(Tileset.FLOOR)
+//                                && world[posX + 1][posY].equals(Tileset.FLOOR);
+//                        publicWall = isWall && (horizontalPublicWall || verticalPublicWall);
+//                        if (publicWall) {
+//                            world[posX][posY] = Tileset.FLOOR;
+//                        }
+//                    }
+//                    // if previous tile is floor, do nothing
+//                    if (!publicWall && !world[posX][posY].equals(Tileset.FLOOR)) {
+//                        world[posX][posY] = Tileset.WALL;
+//                    }
+//                } else {
+//                    world[posX][posY] = Tileset.FLOOR;
+//                }
+//                boolean corner = (i == 0 && j == 0)
+//                        || (i == 0 && j == length - 1)
+//                        || (i == width - 1 && j == 0)
+//                        || (i == width - 1 && j == length - 1);
+//                boolean publicRow =
+
+                // at edge should draw a wall
+                if (roomEdge) {
+                    world[posX][posY] = Tileset.WALL;
                 } else {
                     world[posX][posY] = Tileset.FLOOR;
                 }
@@ -197,6 +210,27 @@ public class MapGenerator {
             int width = RandomUtils.uniform(RANDOM, Room.MIN_WIDTH, Room.MAX_WIDTH);
             int height = RandomUtils.uniform(RANDOM, Room.MIN_HEIGHT, Room.MAX_HEIGHT);
             drawRoom(world, new Room(new Point(posX, posY), width, height));
+        }
+    }
+
+    private void removePublicWall(TETile[][] world) {
+        for (int i = 0; i < WIDTH; i++) {
+            for (int j = 0; j < HEIGHT; j++) {
+                boolean isMapEdge = (i == 0 || j == 0 || i == WIDTH - 1 || j == WIDTH - 1);
+                if (!isMapEdge) {
+                    boolean isWall = world[i][j].equals(Tileset.WALL);
+                    boolean horizontalPublicWall = world[i][j - 1].equals(Tileset.FLOOR)
+                            && world[i][j + 1].equals(Tileset.FLOOR);
+                    boolean verticalPublicWall = world[i - 1][j].equals(Tileset.FLOOR)
+                            && world[i + 1][j].equals(Tileset.FLOOR);
+                    boolean publicWall = horizontalPublicWall || verticalPublicWall;
+                    if (isWall && publicWall) {
+                        world[i][j] = Tileset.FLOOR;
+                    }
+
+                }
+            }
+
         }
     }
 }
