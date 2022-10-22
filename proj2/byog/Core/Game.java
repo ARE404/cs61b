@@ -33,24 +33,20 @@ public class Game {
         // TODO: Fill out this method to run the game using the input passed in,
 
         // process string
-        input = input.toLowerCase();
-        StringBuilder seedStr = new StringBuilder();
-        if (input.charAt(0) == 'n') {
-            for (int i = 0; i < input.length(); i++) {
-                if (input.charAt(i) == 's') {
-                    break;
-                }
-                seedStr.append(input.charAt(i));
-            }
-        } else if (input.charAt(0) == 'l') {
-
-        }
+//        input = input.toLowerCase();
+//        StringBuilder seedStr = new StringBuilder();
+//        if (input.charAt(0) == 'n') {
+//            for (int i = 0; i < input.length(); i++) {
+//                if (input.charAt(i) == 's') {
+//                    break;
+//                }
+//                seedStr.append(input.charAt(i));
+//            }
 
         // run the game
         // deal with result
 
         boolean save = false;
-        System.out.println(input);
         Pattern p = Pattern.compile("N(\\d+)S", Pattern.CASE_INSENSITIVE);
         Matcher m = p.matcher(input);
         if (!m.matches()) {

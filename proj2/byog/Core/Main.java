@@ -17,8 +17,7 @@ public class Main {
             Game game = new Game();
             TETile[][] worldState = game.playWithInputString(args[0]);
             // draw game state in terminal
-            System.out.println(TETile.toString(worldState));
-
+//            System.out.println(TETile.toString(worldState));
 
             // render for debug
             TERenderer ter = new TERenderer();
