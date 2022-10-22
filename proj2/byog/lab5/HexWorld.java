@@ -26,17 +26,18 @@ public class HexWorld {
      */
     private TETile randomTile() {
         int tileNum = RANDOM.nextInt(8);
-        return switch (tileNum) {
-            case 0 -> Tileset.FLOWER;
-            case 1 -> Tileset.GRASS;
-            case 2 -> Tileset.FLOOR;
-            case 3 -> Tileset.MOUNTAIN;
-            case 4 -> Tileset.SAND;
-            case 5 -> Tileset.WALL;
-            case 6 -> Tileset.WATER;
-            case 7 -> Tileset.TREE;
-            default -> Tileset.NOTHING;
-        };
+        return null;
+//        return switch (tileNum) {
+//            case 0 -> Tileset.FLOWER;
+//            case 1 -> Tileset.GRASS;
+//            case 2 -> Tileset.FLOOR;
+//            case 3 -> Tileset.MOUNTAIN;
+//            case 4 -> Tileset.SAND;
+//            case 5 -> Tileset.WALL;
+//            case 6 -> Tileset.WATER;
+//            case 7 -> Tileset.TREE;
+//            default -> Tileset.NOTHING;
+//        };
     }
 
     /**
