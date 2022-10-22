@@ -10,7 +10,6 @@ import java.util.regex.Pattern;
 
 public class Game {
     TERenderer ter = new TERenderer();
-    private static Integer SEED = 0;
 
     /**
      * Method used for playing a fresh game. The game should start from the main menu.
@@ -32,21 +31,34 @@ public class Game {
      */
     public TETile[][] playWithInputString(String input) {
         // TODO: Fill out this method to run the game using the input passed in,
-        // and return a 2D tile representation of the world that would have been
-        // drawn if the same inputs had been given to playWithKeyboard().
 
+        // process string
+        input = input.toLowerCase();
+        StringBuilder seedStr = new StringBuilder();
+        if (input.charAt(0) == 'n') {
+            for (int i = 0; i < input.length(); i++) {
+                if (input.charAt(i) == 's') {
+                    break;
+                }
+                seedStr.append(input.charAt(i));
+            }
+        } else if (input.charAt(0) == 'l') {
+
+        }
+
+        // run the game
+        // deal with result
+
+        boolean save = false;
         System.out.println(input);
-
         Pattern p = Pattern.compile("N(\\d+)S", Pattern.CASE_INSENSITIVE);
         Matcher m = p.matcher(input);
         if (!m.matches()) {
             System.out.println("This input string is not valid! Retry!");
             System.exit(1);
         }
-        SEED = Integer.parseInt(m.group(1));
-
-        MapGenerator mp = new MapGenerator(SEED);
-
-        return mp.generateMap(60, 40);
+        int SEED = Integer.parseInt(m.group(1));
+        WorldGenerator wg = new WorldGenerator(SEED);
+        return wg.generateWorld(60, 40);
     }
 }
