@@ -47,8 +47,8 @@ public class Game {
         // deal with result
 
         boolean save = false;
-        Pattern p = Pattern.compile("N(\\d+)S", Pattern.CASE_INSENSITIVE);
-        Matcher m = p.matcher(input);
+        Pattern p = Pattern.compile("n(\\d+)s", Pattern.CASE_INSENSITIVE);
+        Matcher m = p.matcher(input.toLowerCase());
         if (!m.matches()) {
             System.out.println("This input string is not valid! Retry!");
             System.exit(1);
