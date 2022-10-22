@@ -20,9 +20,9 @@ public class Main {
 //            System.out.println(TETile.toString(worldState));
 
             // render for debug
-            TERenderer ter = new TERenderer();
-            ter.initialize(WorldGenerator.WORLD_LENGTH, WorldGenerator.WORLD_WIDTH);
-            ter.renderFrame(worldState);
+//            TERenderer ter = new TERenderer();
+//            ter.initialize(WorldGenerator.WORLD_LENGTH, WorldGenerator.WORLD_WIDTH);
+//            ter.renderFrame(worldState);
         } else {
             // play with keyboard
             Game game = new Game();
