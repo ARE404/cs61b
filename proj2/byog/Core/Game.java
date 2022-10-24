@@ -46,7 +46,11 @@ public class Game {
                 }
                 seed.append(input.charAt(i));
             }
-            int SEED = Integer.parseInt(seed.toString());
+            String seedStr = seed.toString();
+            if (seedStr.length() > 9) {
+                seedStr = seedStr.substring(0, 8);
+            }
+            int SEED = Integer.parseInt(seedStr);
             wg = new WorldGenerator(SEED);
         } else {
             System.exit(0);
