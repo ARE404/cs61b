@@ -1,8 +1,6 @@
 package byog.Core;
 
-import byog.TileEngine.TERenderer;
 import byog.TileEngine.TETile;
-import byog.TileEngine.Tileset;
 
 import java.io.IOException;
 
@@ -23,6 +21,7 @@ public class Game {
      * world. However, the behavior is slightly different. After playing with "n123sss:q", the game
      * should save, and thus if we then called playWithInputString with the string "l", we'd expect
      * to get the exact same world back again, since this corresponds to loading the saved game.
+     *
      * @param input the input string to feed to your program
      * @return the 2D TETile[][] representing the state of the world
      */
@@ -36,7 +35,7 @@ public class Game {
                 throw new RuntimeException(e);
             }
 
-            return WorldGenerator.world;
+            return WorldGenerator.getWorld();
         } else if (input.charAt(0) == 'n') {
             input = input.substring(1);
             StringBuilder seed = new StringBuilder();
@@ -50,8 +49,8 @@ public class Game {
             if (seedStr.length() > 9) {
                 seedStr = seedStr.substring(0, 8);
             }
-            int SEED = Integer.parseInt(seedStr);
-            wg = new WorldGenerator(SEED);
+            int seedInt = Integer.parseInt(seedStr);
+            wg = new WorldGenerator(seedInt);
         } else {
             System.exit(0);
         }

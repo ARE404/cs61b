@@ -3,11 +3,19 @@ package byog.Core;
 import byog.TileEngine.TETile;
 import byog.TileEngine.Tileset;
 
-import java.awt.*;
-import java.io.*;
+import java.awt.Point;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 
 public class Utils {
-    public static void drawLine(TETile[][] world, Point startPos, boolean vertical, int length, TETile set) {
+    public static void drawLine(TETile[][] world,
+                                Point startPos,
+                                boolean vertical,
+                                int length,
+                                TETile set) {
         int startX = startPos.x;
         int startY = startPos.y;
         if (vertical) {
@@ -21,13 +29,17 @@ public class Utils {
         }
     }
 
-    public static void drawSquare(TETile[][] world, Point bottomLeftPos, int width, int length, TETile set) {
+    public static void drawSquare(TETile[][] world,
+                                  Point bottomLeftPos,
+                                  int width,
+                                  int length,
+                                  TETile set) {
         int leftX = bottomLeftPos.x;
         int bottomY = bottomLeftPos.y;
         int rightX = leftX + length;
         int topY = bottomY + width;
 
-        if (rightX >= WorldGenerator.WORLD_LENGTH || topY >= WorldGenerator.WORLD_WIDTH) {
+        if (rightX >= WorldGenerator.getWorldLength() || topY >= WorldGenerator.getWorldWidth()) {
             return;
         }
 
@@ -52,9 +64,12 @@ public class Utils {
     }
 
     public static void removePublicWall(TETile[][] world) {
-        for (int i = 0; i < WorldGenerator.WORLD_LENGTH; i++) {
-            for (int j = 0; j < WorldGenerator.WORLD_WIDTH; j++) {
-                boolean isMapEdge = (i == 0 || j == 0 || i == WorldGenerator.WORLD_LENGTH - 1 || j == WorldGenerator.WORLD_WIDTH - 1);
+        for (int i = 0; i < WorldGenerator.getWorldLength(); i++) {
+            for (int j = 0; j < WorldGenerator.getWorldWidth(); j++) {
+                boolean isMapEdge = (i == 0
+                                    || j == 0
+                                    || i == WorldGenerator.getWorldLength() - 1
+                                    || j == WorldGenerator.getWorldWidth() - 1);
                 if (!isMapEdge) {
                     boolean isWall = world[i][j].equals(Tileset.WALL);
                     boolean horizontalPublicWall = world[i][j - 1].equals(Tileset.FLOOR)
@@ -71,9 +86,11 @@ public class Utils {
     }
 
     public static void removeIndividualWall(TETile[][] world) {
-        for (int i = 0; i < WorldGenerator.WORLD_LENGTH; i++) {
-            for (int j = 0; j < WorldGenerator.WORLD_WIDTH; j++) {
-                boolean isMapEdge = (i == 0 || j == 0 || i == WorldGenerator.WORLD_LENGTH - 1 || j == WorldGenerator.WORLD_WIDTH - 1);
+        for (int i = 0; i < WorldGenerator.getWorldLength(); i++) {
+            for (int j = 0; j < WorldGenerator.getWorldWidth(); j++) {
+                boolean isMapEdge = (i == 0 || j == 0
+                                    || i == WorldGenerator.getWorldLength() - 1
+                                    || j == WorldGenerator.getWorldWidth() - 1);
                 if (!isMapEdge) {
                     boolean isWall = world[i][j].equals(Tileset.WALL);
                     boolean horizontalPublicWall = world[i][j - 1].equals(Tileset.FLOOR)
@@ -91,9 +108,9 @@ public class Utils {
 
     public static void setDoor(TETile[][] world) {
         while (true) {
-            int x = RandomUtils.uniform(WorldGenerator.RANDOM, WorldGenerator.blockNumX);
-            int y = RandomUtils.uniform(WorldGenerator.RANDOM, WorldGenerator.blockNumY);
-            Block b = WorldGenerator.blockList.get(x).get(y);
+            int x = RandomUtils.uniform(WorldGenerator.getRANDOM(), WorldGenerator.getBlockNumX());
+            int y = RandomUtils.uniform(WorldGenerator.getRANDOM(), WorldGenerator.getBlockNumY());
+            Block b = WorldGenerator.getBlockList().get(x).get(y);
             if (b.hasRoom()) {
                 Room r = b.getRoom();
                 world[r.getRoomPos().x + r.getLength() / 2][r.getRoomPos().y] = Tileset.LOCKED_DOOR;

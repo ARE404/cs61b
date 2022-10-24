@@ -3,11 +3,10 @@ package byog.Core;
 import byog.TileEngine.TERenderer;
 import byog.TileEngine.TETile;
 
-import java.io.IOException;
-
-/** This is the main entry point for the program. This class simply parses
- *  the command line inputs, and lets the byog.Core.Game class take over
- *  in either keyboard or input string mode.
+/**
+ * This is the main entry point for the program. This class simply parses
+ * the command line inputs, and lets the byog.Core.Game class take over
+ * in either keyboard or input string mode.
  */
 public class Main {
     public static void main(String[] args) {
@@ -18,9 +17,8 @@ public class Main {
             // play with input string
             Game game = new Game();
             TETile[][] world = game.playWithInputString(args[0]);
-//            System.out.println(TETile.toString(worldState));
             TERenderer ter = new TERenderer();
-            ter.initialize(WorldGenerator.WORLD_LENGTH, WorldGenerator.WORLD_WIDTH);
+            ter.initialize(WorldGenerator.getWorldLength(), WorldGenerator.getWorldWidth());
             ter.renderFrame(world);
         } else {
             // play with keyboard

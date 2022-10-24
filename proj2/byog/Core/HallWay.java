@@ -2,8 +2,7 @@ package byog.Core;
 
 import byog.TileEngine.TETile;
 
-import javax.xml.transform.sax.SAXTransformerFactory;
-import java.awt.*;
+import java.awt.Point;
 import java.util.ArrayList;
 
 public class HallWay {
@@ -11,29 +10,26 @@ public class HallWay {
     public static ArrayList<Room> computeHallWay(ArrayList<ArrayList<Block>> blockList) {
         ArrayList<Room> res = new ArrayList<>();
         res.addAll(computeRowHallWay(blockList));
-//        ArrayList<Room> colHallWay = computeColHallWay(blockList);
-//        if (colHallWay != null) {
-//            res.addAll(colHallWay);
-//        }
         res.addAll(computeColHallWay(blockList));
         return res;
     }
 
     private static ArrayList<Room> computeRowHallWay(ArrayList<ArrayList<Block>> blockList) {
         ArrayList<Room> res = new ArrayList<>();
-        for (int y = 0; y < WorldGenerator.blockNumY; ++y) {
+        for (int y = 0; y < WorldGenerator.getBlockNumY(); ++y) {
             ArrayList<Block> rowBlockList = new ArrayList<>();
-            for (int x = 0; x < WorldGenerator.blockNumX; ++x) {
+            for (int x = 0; x < WorldGenerator.getBlockNumX(); ++x) {
                 rowBlockList.add(blockList.get(x).get(y));
             }
-            ArrayList<Block> blocksWithRoomList = blocksWithRoom(rowBlockList);
-            int size = blocksWithRoomList.size();
+            ArrayList<Block> blocksWithRoom = blocksWithRoom(rowBlockList);
+            int size = blocksWithRoom.size();
             if (size == 2) {
-                res.add(hallWayBetweenHorizontalBlocks(blocksWithRoomList.get(0), blocksWithRoomList.get(1)));
+                res.add(hallWayBetweenHBlocks(blocksWithRoom.get(0), blocksWithRoom.get(1)));
             } else if (size > 2) {
                 for (int i = 0; i < size - 1; ++i) {
-                    if (RandomUtils.bernoulli(WorldGenerator.RANDOM, 0.8)) {
-                        res.add(hallWayBetweenHorizontalBlocks(blocksWithRoomList.get(i), blocksWithRoomList.get(i + 1)));
+                    if (RandomUtils.bernoulli(WorldGenerator.getRANDOM(), 0.8)) {
+                        res.add(hallWayBetweenHBlocks(blocksWithRoom.get(i)
+                                                    , blocksWithRoom.get(i + 1)));
                     }
                 }
             }
@@ -43,16 +39,16 @@ public class HallWay {
 
     private static ArrayList<Room> computeColHallWay(ArrayList<ArrayList<Block>> blockList) {
         ArrayList<Room> res = new ArrayList<>();
-        for (ArrayList<Block> colBlockList :
-                blockList) {
-            ArrayList<Block> blocksWithRoomList = blocksWithRoom(colBlockList);
-            int size = blocksWithRoomList.size();
+        for (ArrayList<Block> colBlockList : blockList) {
+            ArrayList<Block> blocksWithRoom = blocksWithRoom(colBlockList);
+            int size = blocksWithRoom.size();
             if (size == 2) {
-                res.add(hallWayBetweenVerticalBlocks(blocksWithRoomList.get(0), blocksWithRoomList.get(1)));
+                res.add(hallWayBetweenVBlocks(blocksWithRoom.get(0), blocksWithRoom.get(1)));
             } else if (size > 2) {
                 for (int i = 0; i < size - 1; ++i) {
-                    if (RandomUtils.bernoulli(WorldGenerator.RANDOM, 0.8)) {
-                        res.add(hallWayBetweenVerticalBlocks(blocksWithRoomList.get(i), blocksWithRoomList.get(i + 1)));
+                    if (RandomUtils.bernoulli(WorldGenerator.getRANDOM(), 0.8)) {
+                        res.add(hallWayBetweenVBlocks(blocksWithRoom.get(i)
+                                                    , blocksWithRoom.get(i + 1)));
                     }
                 }
             }
@@ -65,8 +61,7 @@ public class HallWay {
      */
     private static ArrayList<Block> blocksWithRoom(ArrayList<Block> blocks) {
         ArrayList<Block> res = new ArrayList<>();
-        for (Block b :
-                blocks) {
+        for (Block b : blocks) {
             if (b.hasRoom()) {
                 res.add(b);
             }
@@ -77,7 +72,7 @@ public class HallWay {
     /**
      * Return the hallway between two blocks.
      */
-    public static Room hallWayBetweenVerticalBlocks(Block block1, Block block2) {
+    public static Room hallWayBetweenVBlocks(Block block1, Block block2) {
         if ((!(block1.hasRoom() && block2.hasRoom())) || (block1.getPos().x != block2.getPos().x)) {
             return null;
         }
@@ -95,9 +90,9 @@ public class HallWay {
 
         // compute overlap length
         int minRight = Math.min(roomAbove.getRoomTopRightPos().x,
-                                roomBelow.getRoomTopRightPos().x);
+                roomBelow.getRoomTopRightPos().x);
         int maxLeft = Math.max(roomAbove.getRoomPos().x,
-                               roomBelow.getRoomPos().x);
+                roomBelow.getRoomPos().x);
         int overlapLength = Math.max(0, minRight - maxLeft);
 
         // if not overlap return
@@ -120,7 +115,7 @@ public class HallWay {
         return new Room(hallWayPos, 2, hallWayLength);
     }
 
-    public static Room hallWayBetweenHorizontalBlocks(Block block1, Block block2) {
+    public static Room hallWayBetweenHBlocks(Block block1, Block block2) {
         if ((!(block1.hasRoom() && block2.hasRoom())) || (block1.getPos().y != block2.getPos().y)) {
             return null;
         }
@@ -137,10 +132,10 @@ public class HallWay {
         }
 
         // compute overlap length
-        int minTop = Math.min(roomLeft.getRoomTopRightPos().y,
-                              roomRight.getRoomTopRightPos().y);
+        int minTop = Math.min(roomLeft.getRoomTopRightPos().y
+                            , roomRight.getRoomTopRightPos().y);
         int maxBottom = Math.max(roomLeft.getRoomPos().y
-                               , roomRight.getRoomPos().y);
+                                , roomRight.getRoomPos().y);
         int overlapLength = Math.max(0, minTop - maxBottom);
 
         // if not overlap return
@@ -165,7 +160,7 @@ public class HallWay {
         if (hallWays.size() == 0) {
             return;
         }
-        for (Room hallWay: hallWays) {
+        for (Room hallWay : hallWays) {
             Room.drawRoom(world, hallWay);
         }
     }

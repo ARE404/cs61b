@@ -9,8 +9,8 @@ import java.util.Random;
  * other randomness related stuff you might want to do. Feel free to
  * modify this file.
  * <p>
- * Adapted from <a href="https://introcs.cs.princeton.edu/java/22library/StdRandom.java.html">...</a>
- *
+ * Adapted from <a href=
+ *              "https://introcs.cs.princeton.edu/java/22library/StdRandom.java.html">...</a>
  */
 public class RandomUtils {
 
@@ -36,7 +36,6 @@ public class RandomUtils {
         }
         return random.nextInt(n);
     }
-
 
     /**
      * Returns a random long integer uniformly in [0, n).
@@ -71,7 +70,6 @@ public class RandomUtils {
     //  STATIC METHODS BELOW RELY ON JAVA.UTIL.RANDOM ONLY INDIRECTLY VIA
     //  THE STATIC METHODS ABOVE.
     ///////////////////////////////////////////////////////////////////////////
-
 
     /**
      * Returns a random integer uniformly in [a, b).
@@ -261,13 +259,13 @@ public class RandomUtils {
         for (int i = 0; i < probabilities.length; i++) {
             if (!(probabilities[i] >= 0.0)) {
                 throw new IllegalArgumentException("array entry " + i + " must be nonnegative: "
-                                                   + probabilities[i]);
+                        + probabilities[i]);
             }
             sum += probabilities[i];
         }
         if (sum > 1.0 + eps || sum < 1.0 - eps) {
             throw new IllegalArgumentException("sum of array entries does not approximately "
-                                               + "equal 1.0: " + sum);
+                    + "equal 1.0: " + sum);
         }
 
         // the for loop may not return a value when both r is (nearly) 1.0 and when the
@@ -303,7 +301,7 @@ public class RandomUtils {
         for (int i = 0; i < frequencies.length; i++) {
             if (frequencies[i] < 0) {
                 throw new IllegalArgumentException("array entry " + i + " must be nonnegative: "
-                                                   + frequencies[i]);
+                        + frequencies[i]);
             }
             sum += frequencies[i];
         }
@@ -540,7 +538,7 @@ public class RandomUtils {
     private static void validateSubarrayIndices(int lo, int hi, int length) {
         if (lo < 0 || hi > length || lo > hi) {
             throw new IllegalArgumentException("subarray indices out of bounds: [" + lo + ", "
-                                               + hi + ")");
+                    + hi + ")");
         }
     }
 }
