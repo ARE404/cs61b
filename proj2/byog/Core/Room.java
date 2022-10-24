@@ -73,11 +73,11 @@ public class Room {
     @Override
     public String toString() {
         return "Room{" +
-                "roomPos=" + roomPos +
-                ", roomTopRightPos=" + roomTopRightPos +
-                ", length=" + length +
-                ", width=" + width +
-                '}';
+                "roomPos=" + roomPos
+                + ", roomTopRightPos=" + roomTopRightPos
+                + ", length=" + length
+                + ", width=" + width
+                + '}';
     }
 
     public boolean outOfBoundary() {

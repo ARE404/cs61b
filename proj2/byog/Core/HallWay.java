@@ -28,8 +28,8 @@ public class HallWay {
             } else if (size > 2) {
                 for (int i = 0; i < size - 1; ++i) {
                     if (RandomUtils.bernoulli(WorldGenerator.getRANDOM(), 0.8)) {
-                        res.add(hallWayBetweenHBlocks(blocksWithRoom.get(i)
-                                                    , blocksWithRoom.get(i + 1)));
+                        Block blockI = blocksWithRoom.get(i);
+                        res.add(hallWayBetweenHBlocks(blockI, blocksWithRoom.get(i + 1)));
                     }
                 }
             }
@@ -47,8 +47,8 @@ public class HallWay {
             } else if (size > 2) {
                 for (int i = 0; i < size - 1; ++i) {
                     if (RandomUtils.bernoulli(WorldGenerator.getRANDOM(), 0.8)) {
-                        res.add(hallWayBetweenVBlocks(blocksWithRoom.get(i)
-                                                    , blocksWithRoom.get(i + 1)));
+                        Block blockI = blocksWithRoom.get(i);
+                        res.add(hallWayBetweenVBlocks(blockI, blocksWithRoom.get(i + 1)));
                     }
                 }
             }

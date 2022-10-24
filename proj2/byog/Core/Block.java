@@ -2,7 +2,7 @@ package byog.Core;
 
 import byog.TileEngine.TETile;
 
-import java.awt.*;
+import java.awt.Point;
 import java.util.ArrayList;
 
 import static byog.Core.WorldGenerator.blockNumX;

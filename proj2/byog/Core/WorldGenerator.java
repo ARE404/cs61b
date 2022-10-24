@@ -36,16 +36,16 @@ public class WorldGenerator implements Serializable {
         return SEED;
     }
 
-    public static void setSEED(long SEED) {
-        WorldGenerator.SEED = SEED;
+    public static void setSEED(long seed) {
+        WorldGenerator.SEED = seed;
     }
 
     public static Random getRANDOM() {
         return RANDOM;
     }
 
-    public static void setRANDOM(Random RANDOM) {
-        WorldGenerator.RANDOM = RANDOM;
+    public static void setRANDOM(Random random) {
+        WorldGenerator.RANDOM = random;
     }
 
     public static int getWorldWidth() {
