@@ -3,11 +3,8 @@ package byog.Core;
 import byog.TileEngine.TERenderer;
 import byog.TileEngine.TETile;
 import byog.TileEngine.Tileset;
-import byog.lab5.HexWorld;
 
 import java.io.IOException;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class Game {
 
@@ -29,15 +26,17 @@ public class Game {
      * @param input the input string to feed to your program
      * @return the 2D TETile[][] representing the state of the world
      */
-    public TETile[][] playWithInputString(String input) throws IOException, ClassNotFoundException {
-        // TODO: Fill out this method to run the game using the input passed in,
-
+    public TETile[][] playWithInputString(String input) {
         input = input.toLowerCase();
         WorldGenerator wg = new WorldGenerator();
         if (input.charAt(0) == 'l') {
-            wg = Utils.loadGame();
+            try {
+                wg = Utils.loadGame();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
 
-            return wg.world;
+            return WorldGenerator.world;
         } else if (input.charAt(0) == 'n') {
             input = input.substring(1);
             StringBuilder seed = new StringBuilder();
@@ -53,7 +52,11 @@ public class Game {
             System.exit(0);
         }
         if (input.endsWith(":q")) {
-            Utils.saveGame(wg);
+            try {
+                Utils.saveGame(wg);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         }
 
         return wg.generateWorld(60, 40);
