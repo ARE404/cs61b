@@ -55,11 +55,11 @@ public class Block {
                 '}';
     }
 
-    public static ArrayList<ArrayList<Block>> computeBlockList(TETile[][] world) {
+    public static ArrayList<ArrayList<Block>> computeBlockList() {
         blockNumX = WorldGenerator.WORLD_LENGTH / Block.BLOCK_LENGTH;
         blockNumY = WorldGenerator.WORLD_WIDTH / Block.BLOCK_LENGTH;
 
-        ArrayList<ArrayList<Block>> blocks = new ArrayList<ArrayList<Block>>();
+        ArrayList<ArrayList<Block>> blocks = new ArrayList<>();
         for (int i = 0; i < blockNumX; i++) {
             ArrayList<Block> colBlocks = new ArrayList<>();
             for (int j = 0; j < blockNumY; j++) {

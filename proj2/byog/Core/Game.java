@@ -5,11 +5,11 @@ import byog.TileEngine.TETile;
 import byog.TileEngine.Tileset;
 import byog.lab5.HexWorld;
 
+import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Game {
-    TERenderer ter = new TERenderer();
 
     /**
      * Method used for playing a fresh game. The game should start from the main menu.
@@ -29,32 +29,33 @@ public class Game {
      * @param input the input string to feed to your program
      * @return the 2D TETile[][] representing the state of the world
      */
-    public TETile[][] playWithInputString(String input) {
+    public TETile[][] playWithInputString(String input) throws IOException, ClassNotFoundException {
         // TODO: Fill out this method to run the game using the input passed in,
 
-        // process string
-//        input = input.toLowerCase();
-//        StringBuilder seedStr = new StringBuilder();
-//        if (input.charAt(0) == 'n') {
-//            for (int i = 0; i < input.length(); i++) {
-//                if (input.charAt(i) == 's') {
-//                    break;
-//                }
-//                seedStr.append(input.charAt(i));
-//            }
+        input = input.toLowerCase();
+        WorldGenerator wg = new WorldGenerator();
+        if (input.charAt(0) == 'l') {
+            wg = Utils.loadGame();
 
-        // run the game
-        // deal with result
-
-        boolean save = false;
-        Pattern p = Pattern.compile("n(\\d+)s", Pattern.CASE_INSENSITIVE);
-        Matcher m = p.matcher(input.toLowerCase());
-        if (!m.matches()) {
-            System.out.println("This input string is not valid! Retry!");
-            System.exit(1);
+            return wg.world;
+        } else if (input.charAt(0) == 'n') {
+            input = input.substring(1);
+            StringBuilder seed = new StringBuilder();
+            for (int i = 0; i < input.length(); i++) {
+                if (input.charAt(i) == 's') {
+                    break;
+                }
+                seed.append(input.charAt(i));
+            }
+            int SEED = Integer.parseInt(seed.toString());
+            wg = new WorldGenerator(SEED);
+        } else {
+            System.exit(0);
         }
-        int SEED = Integer.parseInt(m.group(1));
-        WorldGenerator wg = new WorldGenerator(SEED);
+        if (input.endsWith(":q")) {
+            Utils.saveGame(wg);
+        }
+
         return wg.generateWorld(60, 40);
     }
 }

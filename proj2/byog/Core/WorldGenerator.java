@@ -6,6 +6,7 @@ import byog.TileEngine.Tileset;
 
 import javax.xml.transform.sax.SAXTransformerFactory;
 import java.awt.*;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Random;
@@ -15,14 +16,20 @@ import java.util.Random;
  * the length of horizontal direction called length.
  */
 /** This class generates a world to verify the random algorithm. */
-public class WorldGenerator {
+public class WorldGenerator implements Serializable {
     public static long SEED;
     public static Random RANDOM;
     public static int WORLD_WIDTH;
     public static int WORLD_LENGTH;
+
     public static TETile[][] world;
     public static int blockNumX;
     public static int blockNumY;
+
+
+    public WorldGenerator() {
+    }
+
     public static ArrayList<ArrayList<Block>> blockList;
     public WorldGenerator(long s) {
         SEED = s;
@@ -41,7 +48,7 @@ public class WorldGenerator {
         }
 
         // Compute Block
-        blockList = Block.computeBlockList(world);
+        blockList = Block.computeBlockList();
         ArrayList<Room> hallWayList = HallWay.computeHallWay(blockList);
 
         // draw
@@ -56,6 +63,7 @@ public class WorldGenerator {
         // draw Hallway
         // conflict
         Utils.dealConflict(world);
+        Utils.setDoor(world);
         return world;
     }
 }

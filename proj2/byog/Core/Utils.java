@@ -4,9 +4,7 @@ import byog.TileEngine.TETile;
 import byog.TileEngine.Tileset;
 
 import java.awt.*;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 
 public class Utils {
     public static void drawLine(TETile[][] world, Point startPos, boolean vertical, int length, TETile set) {
@@ -91,19 +89,41 @@ public class Utils {
         }
     }
 
-    public void saveGame() throws IOException {
-        // try creating file
-        File f = new File("savedGame.txt");
-        f.createNewFile();
-        // write to file
-        FileWriter writer = new FileWriter("savedGame.txt");
-        String savedWorld = WorldGenerator.world.toString();
-        writer.write(savedWorld);
-        writer.close();
+    public static void setDoor(TETile[][] world) {
+        while (true) {
+            int x = RandomUtils.uniform(WorldGenerator.RANDOM, WorldGenerator.blockNumX);
+            int y = RandomUtils.uniform(WorldGenerator.RANDOM, WorldGenerator.blockNumY);
+            Block b = WorldGenerator.blockList.get(x).get(y);
+            if (b.hasRoom()) {
+                Room r = b.getRoom();
+                world[r.getRoomPos().x + r.getLength() / 2][r.getRoomPos().y] = Tileset.LOCKED_DOOR;
+                return;
+            }
+        }
     }
 
-    public void loadGame() {
+    public static void saveGame(WorldGenerator wg) throws IOException {
+        FileOutputStream fos = new FileOutputStream("savedGame.txt");
+        ObjectOutputStream oos = new ObjectOutputStream(fos);
+        oos.writeObject(wg);
+        oos.close();
+        fos.close();
+        System.exit(0);
+    }
 
+    public static WorldGenerator loadGame() throws IOException {
+        FileInputStream fis = new FileInputStream("savedGame.txt");
+        ObjectInputStream ois = new ObjectInputStream(fis);
+        WorldGenerator wg = null;
+        try {
+            wg = (WorldGenerator) ois.readObject();
+        } catch (ClassNotFoundException e) {
+            System.exit(0);
+            throw new RuntimeException(e);
+        }
+        ois.close();
+        fis.close();
+        return wg;
     }
 
     public void endGame() {
