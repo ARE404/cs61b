@@ -132,10 +132,8 @@ public class HallWay {
         }
 
         // compute overlap length
-        int minTop = Math.min(roomLeft.getRoomTopRightPos().y
-                            , roomRight.getRoomTopRightPos().y);
-        int maxBottom = Math.max(roomLeft.getRoomPos().y
-                                , roomRight.getRoomPos().y);
+        int minTop = Math.min(roomLeft.getRoomTopRightPos().y, roomRight.getRoomTopRightPos().y);
+        int maxBottom = Math.max(roomLeft.getRoomPos().y, roomRight.getRoomPos().y);
         int overlapLength = Math.max(0, minTop - maxBottom);
 
         // if not overlap return

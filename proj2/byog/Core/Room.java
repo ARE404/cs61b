@@ -72,8 +72,8 @@ public class Room {
 
     @Override
     public String toString() {
-        return "Room{" +
-                "roomPos=" + roomPos
+        return "Room{"
+                + "roomPos=" + roomPos
                 + ", roomTopRightPos=" + roomTopRightPos
                 + ", length=" + length
                 + ", width=" + width
