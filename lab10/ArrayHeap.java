@@ -1,4 +1,6 @@
 import org.junit.Test;
+import org.w3c.dom.Node;
+
 import static org.junit.Assert.*;
 
 /**
@@ -176,13 +178,18 @@ public class ArrayHeap<T> implements ExtrinsicPQ<T> {
      */
     @Override
     public T removeMin() {
+        if (size < 1) {
+            return null;
+        }
         // get min to return
         T res = contents[1].item();
         // swap 1st and last
         swap(1, size);
         contents[size] = null;
         size--;
-        sink(1);
+        if (size > 0) {
+            sink(1);
+        }
         return res;
     }
 
