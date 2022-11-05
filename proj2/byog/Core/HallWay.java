@@ -7,19 +7,19 @@ import java.util.ArrayList;
 
 public class HallWay {
 
-    public static ArrayList<Room> computeHallWay(ArrayList<ArrayList<Block>> blockList) {
+    public static ArrayList<Room> computeHallWay(WorldGenerator wg) {
         ArrayList<Room> res = new ArrayList<>();
-        res.addAll(computeRowHallWay(blockList));
-        res.addAll(computeColHallWay(blockList));
+        res.addAll(computeRowHallWay(wg));
+        res.addAll(computeColHallWay(wg));
         return res;
     }
 
-    private static ArrayList<Room> computeRowHallWay(ArrayList<ArrayList<Block>> blockList) {
+    private static ArrayList<Room> computeRowHallWay(WorldGenerator wg) {
         ArrayList<Room> res = new ArrayList<>();
-        for (int y = 0; y < WorldGenerator.getBlockNumY(); ++y) {
+        for (int y = 0; y < wg.blockNumX; ++y) {
             ArrayList<Block> rowBlockList = new ArrayList<>();
-            for (int x = 0; x < WorldGenerator.getBlockNumX(); ++x) {
-                rowBlockList.add(blockList.get(x).get(y));
+            for (int x = 0; x < wg.blockNumY; ++x) {
+                rowBlockList.add(wg.blockList.get(x).get(y));
             }
             ArrayList<Block> blocksWithRoom = blocksWithRoom(rowBlockList);
             int size = blocksWithRoom.size();
@@ -27,7 +27,7 @@ public class HallWay {
                 res.add(hallWayBetweenHBlocks(blocksWithRoom.get(0), blocksWithRoom.get(1)));
             } else if (size > 2) {
                 for (int i = 0; i < size - 1; ++i) {
-                    if (RandomUtils.bernoulli(WorldGenerator.getRANDOM(), 0.8)) {
+                    if (RandomUtils.bernoulli(wg.RANDOM, 0.8)) {
                         Block blockI = blocksWithRoom.get(i);
                         res.add(hallWayBetweenHBlocks(blockI, blocksWithRoom.get(i + 1)));
                     }
@@ -37,16 +37,16 @@ public class HallWay {
         return res;
     }
 
-    private static ArrayList<Room> computeColHallWay(ArrayList<ArrayList<Block>> blockList) {
+    private static ArrayList<Room> computeColHallWay(WorldGenerator wg) {
         ArrayList<Room> res = new ArrayList<>();
-        for (ArrayList<Block> colBlockList : blockList) {
+        for (ArrayList<Block> colBlockList : wg.blockList) {
             ArrayList<Block> blocksWithRoom = blocksWithRoom(colBlockList);
             int size = blocksWithRoom.size();
             if (size == 2) {
                 res.add(hallWayBetweenVBlocks(blocksWithRoom.get(0), blocksWithRoom.get(1)));
             } else if (size > 2) {
                 for (int i = 0; i < size - 1; ++i) {
-                    if (RandomUtils.bernoulli(WorldGenerator.getRANDOM(), 0.8)) {
+                    if (RandomUtils.bernoulli(wg.RANDOM, 0.8)) {
                         Block blockI = blocksWithRoom.get(i);
                         res.add(hallWayBetweenVBlocks(blockI, blocksWithRoom.get(i + 1)));
                     }
@@ -89,8 +89,8 @@ public class HallWay {
         }
 
         // compute overlap length
-        int minRight = Math.min(roomAbove.getRoomTopRightPos().x,
-                roomBelow.getRoomTopRightPos().x);
+        int minRight = Math.min(roomAbove.getRoomTRPos().x,
+                roomBelow.getRoomTRPos().x);
         int maxLeft = Math.max(roomAbove.getRoomPos().x,
                 roomBelow.getRoomPos().x);
         int overlapLength = Math.max(0, minRight - maxLeft);
@@ -132,7 +132,7 @@ public class HallWay {
         }
 
         // compute overlap length
-        int minTop = Math.min(roomLeft.getRoomTopRightPos().y, roomRight.getRoomTopRightPos().y);
+        int minTop = Math.min(roomLeft.getRoomTRPos().y, roomRight.getRoomTRPos().y);
         int maxBottom = Math.max(roomLeft.getRoomPos().y, roomRight.getRoomPos().y);
         int overlapLength = Math.max(0, minTop - maxBottom);
 

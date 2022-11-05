@@ -1,10 +1,13 @@
 package byog.Core;
 
-import byog.TileEngine.TETile;
+import byog.TileEngine.TERenderer;
 
-import java.io.IOException;
+import java.io.*;
 
 public class Game {
+    private static final int UI_LENGTH = 60;
+    private static final int UI_WIDTH = 50;
+    TERenderer ter = new TERenderer();
 
     /**
      * Method used for playing a fresh game. The game should start from the main menu.
@@ -23,45 +26,84 @@ public class Game {
      * to get the exact same world back again, since this corresponds to loading the saved game.
      *
      * @param input the input string to feed to your program
-     * @return the 2D TETile[][] representing the state of the world
      */
-    public TETile[][] playWithInputString(String input) {
+    public void playWithInputString(String input) throws InterruptedException {
+        GameUI gameui = new GameUI(UI_LENGTH, UI_WIDTH);
+        World world = new World();
         input = input.toLowerCase();
-        WorldGenerator wg = new WorldGenerator();
+
+
+        // get initial world
         if (input.charAt(0) == 'l') {
             try {
-                wg = Utils.loadGame();
+                world = loadGame();
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
-
-            return WorldGenerator.getWorld();
         } else if (input.charAt(0) == 'n') {
-            input = input.substring(1);
-            StringBuilder seed = new StringBuilder();
-            for (int i = 0; i < input.length(); i++) {
-                if (input.charAt(i) == 's') {
-                    break;
-                }
-                seed.append(input.charAt(i));
-            }
-            String seedStr = seed.toString();
-            if (seedStr.length() > 9) {
-                seedStr = seedStr.substring(0, 8);
-            }
-            int seedInt = Integer.parseInt(seedStr);
-            wg = new WorldGenerator(seedInt);
+            world = newGame(input.substring(1));
         } else {
             System.exit(0);
         }
-        if (input.endsWith(":q")) {
-            try {
-                Utils.saveGame(wg);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        }
 
-        return wg.generateWorld(60, 40);
+        ter.initialize(world.getWorldLength(), world.getWorldWidth());
+        // apply operations
+        while (true) {
+            gameui.drawGraphic(world);
+        }
+    }
+
+    public World newGame(String input) {
+        // get world seed
+        int seed = getSeed(input);
+        WorldGenerator wg = new WorldGenerator(60, 40, seed);
+        return wg.generateWorld();
+    }
+
+    /**
+     * Parse a string start with seed number and end with s.
+     */
+    public int getSeed(String s) {
+        StringBuilder seed = new StringBuilder();
+        for (int i = 0; i < s.length(); i++) {
+            if (s.charAt(i) == 's') {
+                break;
+            }
+            seed.append(s.charAt(i));
+        }
+        String seedStr = seed.toString();
+        if (seedStr.length() > 9) {
+            seedStr = seedStr.substring(0, 8);
+        }
+        return Integer.parseInt(seedStr);
+    }
+
+    public static void saveGame(WorldGenerator wg) throws IOException {
+        FileOutputStream fos = new FileOutputStream("savedGame.txt");
+        ObjectOutputStream oos = new ObjectOutputStream(fos);
+        oos.writeObject(wg);
+        oos.close();
+        fos.close();
+        System.exit(0);
+    }
+
+    public static World loadGame() throws IOException {
+        FileInputStream fis = new FileInputStream("savedGame.txt");
+        ObjectInputStream ois = new ObjectInputStream(fis);
+        World world;
+        try {
+            world = (World) ois.readObject();
+        } catch (ClassNotFoundException e) {
+            System.exit(0);
+            throw new RuntimeException(e);
+        }
+        ois.close();
+        fis.close();
+        return world;
+    }
+
+    public void endGame() {
+        System.exit(0);
     }
 }
+

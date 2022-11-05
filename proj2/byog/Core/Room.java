@@ -9,7 +9,7 @@ import java.util.Random;
 public class Room {
     private static final double ROOM_GENERATE_FACTOR = 0.8;
     private Point roomPos;
-    private Point roomTopRightPos;
+    private Point roomTRPos;
     private int length;
     private int width;
 
@@ -20,7 +20,7 @@ public class Room {
         this.roomPos = roomPos;
         this.length = length;
         this.width = width;
-        this.roomTopRightPos = new Point(roomPos.x + length, roomPos.y + width);
+        this.roomTRPos = new Point(roomPos.x + length, roomPos.y + width);
     }
 
     public static Room generateRoom(Block block, Random random) {
@@ -66,15 +66,15 @@ public class Room {
         this.width = width;
     }
 
-    public Point getRoomTopRightPos() {
-        return roomTopRightPos;
+    public Point getRoomTRPos() {
+        return roomTRPos;
     }
 
     @Override
     public String toString() {
         return "Room{"
                 + "roomPos=" + roomPos
-                + ", roomTopRightPos=" + roomTopRightPos
+                + ", roomTopRightPos=" + roomTRPos
                 + ", length=" + length
                 + ", width=" + width
                 + '}';

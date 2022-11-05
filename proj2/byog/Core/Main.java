@@ -9,20 +9,17 @@ import byog.TileEngine.TETile;
  * in either keyboard or input string mode.
  */
 public class Main {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
         if (args.length > 1) {
             System.out.println("Can only have one argument - the input string");
             System.exit(0);
-        } else if (args.length == 1) {
+        }
+        Game game = new Game();
+        if (args.length == 1) {
             // play with input string
-            Game game = new Game();
-            TETile[][] world = game.playWithInputString(args[0]);
-            TERenderer ter = new TERenderer();
-            ter.initialize(WorldGenerator.getWorldLength(), WorldGenerator.getWorldWidth());
-            ter.renderFrame(world);
+            game.playWithInputString(args[0]);
         } else {
             // play with keyboard
-            Game game = new Game();
             game.playWithKeyboard();
         }
     }

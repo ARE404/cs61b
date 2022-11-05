@@ -67,7 +67,7 @@ public class MemoryGame {
         // draw
         StdDraw.setFont(new Font("Monaco", Font.BOLD, 30));
         StdDraw.setPenColor(StdDraw.WHITE);
-        StdDraw.text(width / 2, height / 2, s);
+        StdDraw.text(width / 2., height / 2., s);
         // display
         StdDraw.show();
         //TODO: If game is not over, display relevant game information at the top of the screen

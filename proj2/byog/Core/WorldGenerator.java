@@ -3,6 +3,7 @@ package byog.Core;
 import byog.TileEngine.TETile;
 import byog.TileEngine.Tileset;
 
+import java.awt.*;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Random;
@@ -14,116 +15,71 @@ import java.util.Random;
  * the length of horizontal direction called length.
  */
 public class WorldGenerator implements Serializable {
-    private static long SEED;
-    private static Random RANDOM;
-    private static int WORLD_WIDTH;
-    private static int WORLD_LENGTH;
-
-    private static TETile[][] world;
-    static int blockNumX;
-    static int blockNumY;
-    private static ArrayList<ArrayList<Block>> blockList;
+    private int WORLD_WIDTH;
+    private int WORLD_LENGTH;
+    private long seed;
+    public Random RANDOM;
+    private TETile[][] world;
+    int blockNumX;
+    int blockNumY;
+    public ArrayList<ArrayList<Block>> blockList;
 
     public WorldGenerator() {
     }
 
-    public WorldGenerator(long s) {
-        setSEED(s);
-        setRANDOM(new Random(s));
-    }
+    public WorldGenerator(int WORLD_WIDTH, int WORLD_LENGTH, long seed) {
+        this.WORLD_WIDTH = WORLD_WIDTH;
+        this.WORLD_LENGTH = WORLD_LENGTH;
+        this.world = new TETile[WORLD_LENGTH][WORLD_WIDTH];
+        this.seed = seed;
+        this.RANDOM = new Random(seed);
+        this.blockNumX = WORLD_LENGTH / Block.BLOCK_LENGTH;
+        this.blockNumY = WORLD_WIDTH / Block.BLOCK_LENGTH;
 
-    public static long getSEED() {
-        return SEED;
-    }
-
-    public static void setSEED(long seed) {
-        WorldGenerator.SEED = seed;
-    }
-
-    public static Random getRANDOM() {
-        return RANDOM;
-    }
-
-    public static void setRANDOM(Random random) {
-        WorldGenerator.RANDOM = random;
-    }
-
-    public static int getWorldWidth() {
-        return WORLD_WIDTH;
-    }
-
-    public static void setWorldWidth(int worldWidth) {
-        WORLD_WIDTH = worldWidth;
-    }
-
-    public static int getWorldLength() {
-        return WORLD_LENGTH;
-    }
-
-    public static void setWorldLength(int worldLength) {
-        WORLD_LENGTH = worldLength;
-    }
-
-    public static TETile[][] getWorld() {
-        return world;
-    }
-
-    public static void setWorld(TETile[][] world) {
-        WorldGenerator.world = world;
-    }
-
-    public static int getBlockNumX() {
-        return blockNumX;
-    }
-
-    public static void setBlockNumX(int blockNumX) {
-        WorldGenerator.blockNumX = blockNumX;
-    }
-
-    public static int getBlockNumY() {
-        return blockNumY;
-    }
-
-    public static void setBlockNumY(int blockNumY) {
-        WorldGenerator.blockNumY = blockNumY;
-    }
-
-    public static ArrayList<ArrayList<Block>> getBlockList() {
-        return blockList;
-    }
-
-    public static void setBlockList(ArrayList<ArrayList<Block>> blockList) {
-        WorldGenerator.blockList = blockList;
-    }
-
-    public TETile[][] generateWorld(int worldLength, int worldWidth) {
-        // Initialize
-        setWorldWidth(worldWidth);
-        setWorldLength(worldLength);
-        setWorld(new TETile[getWorldLength()][getWorldWidth()]);
-        for (int i = 0; i < getWorldLength(); i++) {
-            for (int j = 0; j < getWorldWidth(); j++) {
-                getWorld()[i][j] = Tileset.NOTHING;
+        for (int i = 0; i < WORLD_LENGTH; i++) {
+            for (int j = 0; j < WORLD_WIDTH; j++) {
+                world[i][j] = Tileset.NOTHING;
             }
         }
+    }
 
+    public World generateWorld() {
         // Compute Block
-        setBlockList(Block.computeBlockList());
-        ArrayList<Room> hallWayList = HallWay.computeHallWay(getBlockList());
+        blockList = Block.computeBlockList(this);
+        ArrayList<Room> hallWayList = HallWay.computeHallWay(this);
 
         // draw
-        for (ArrayList<Block> b1 : getBlockList()) {
+        for (ArrayList<Block> b1 : blockList) {
             for (Block b2 : b1) {
-                Block.drawBlock(getWorld(), b2);
+                Block.drawBlock(world, b2);
             }
         }
         // compute Hallway
-        HallWay.drawHallWay(getWorld(), hallWayList);
+        HallWay.drawHallWay(world, hallWayList);
 
         // draw Hallway
         // conflict
-        Utils.dealConflict(getWorld());
-        Utils.setDoor(getWorld());
-        return getWorld();
+        Utils.dealConflict(world);
+        Utils.setDoor(world);
+
+
+        Player player = computePlayer();
+        drawPlayer(player);
+
+        return new World(WORLD_LENGTH, WORLD_WIDTH, seed, world, player);
+    }
+
+    private Player computePlayer() {
+        while (true) {
+            int x = RandomUtils.uniform(RANDOM, 0, WORLD_LENGTH);
+            int y = RandomUtils.uniform(RANDOM, 0, WORLD_WIDTH);
+            if (world[x][y] == Tileset.FLOOR) {
+                return new Player(new Point(x, y));
+            }
+        }
+    }
+
+    private void drawPlayer(Player player) {
+        world[player.getPlayerPos().x][player.getPlayerPos().y] = Tileset.PLAYER;
     }
 }

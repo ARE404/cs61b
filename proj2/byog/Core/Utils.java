@@ -119,31 +119,5 @@ public class Utils {
         }
     }
 
-    public static void saveGame(WorldGenerator wg) throws IOException {
-        FileOutputStream fos = new FileOutputStream("savedGame.txt");
-        ObjectOutputStream oos = new ObjectOutputStream(fos);
-        oos.writeObject(wg);
-        oos.close();
-        fos.close();
-        System.exit(0);
-    }
 
-    public static WorldGenerator loadGame() throws IOException {
-        FileInputStream fis = new FileInputStream("savedGame.txt");
-        ObjectInputStream ois = new ObjectInputStream(fis);
-        WorldGenerator wg = null;
-        try {
-            wg = (WorldGenerator) ois.readObject();
-        } catch (ClassNotFoundException e) {
-            System.exit(0);
-            throw new RuntimeException(e);
-        }
-        ois.close();
-        fis.close();
-        return wg;
-    }
-
-    public void endGame() {
-        System.exit(0);
-    }
 }

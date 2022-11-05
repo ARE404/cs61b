@@ -5,8 +5,6 @@ import byog.TileEngine.TETile;
 import java.awt.Point;
 import java.util.ArrayList;
 
-import static byog.Core.WorldGenerator.blockNumX;
-import static byog.Core.WorldGenerator.blockNumY;
 
 public class Block {
     public static final int BLOCK_LENGTH = 10;
@@ -19,17 +17,14 @@ public class Block {
         this.room = room;
     }
 
-    public static ArrayList<ArrayList<Block>> computeBlockList() {
-        blockNumX = WorldGenerator.getWorldLength() / Block.BLOCK_LENGTH;
-        blockNumY = WorldGenerator.getWorldWidth() / Block.BLOCK_LENGTH;
-
+    public static ArrayList<ArrayList<Block>> computeBlockList(WorldGenerator wg) {
         ArrayList<ArrayList<Block>> blocks = new ArrayList<>();
-        for (int i = 0; i < blockNumX; i++) {
+        for (int i = 0; i < wg.blockNumX; i++) {
             ArrayList<Block> colBlocks = new ArrayList<>();
-            for (int j = 0; j < blockNumY; j++) {
+            for (int j = 0; j < wg.blockNumY; j++) {
                 Point pos = new Point(i * Block.BLOCK_LENGTH, j * Block.BLOCK_LENGTH);
                 Block newBlock = new Block(pos, null);
-                Room newRoom = Room.generateRoom(newBlock, WorldGenerator.getRANDOM());
+                Room newRoom = Room.generateRoom(newBlock, wg.RANDOM);
                 if (newRoom != null && newRoom.outOfBoundary()) {
                     newRoom = null;
                 }
