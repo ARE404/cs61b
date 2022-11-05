@@ -54,6 +54,9 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
      */
     @Override
     public V get(K key) {
+        if (key == null) {
+            throw new IllegalArgumentException("the key of get method is null!");
+        }
         return this.buckets[this.hash(key)].get(key);
     }
 

@@ -54,14 +54,18 @@ public class BSTMap<K extends Comparable<K>, V> implements Map61B<K, V> {
      *  or null if this map contains no mapping for the key.
      */
     private V getHelper(K key, Node p) {
+        if (key == null) {
+            throw new IllegalArgumentException("the key argument of get is null!");
+        }
         // not found
         if (p == null) {
             return null;
         }
         // compare, equal return, bigger right, smaller left
-        if (key.compareTo(p.key) == 0) {
+        int cmp = key.compareTo(p.key);
+        if (cmp == 0) {
             return p.value;
-        } else if (key.compareTo(p.key) > 0) {
+        } else if (cmp > 0) {
             return getHelper(key, p.right);
         } else {
             return getHelper(key, p.left);
@@ -85,15 +89,18 @@ public class BSTMap<K extends Comparable<K>, V> implements Map61B<K, V> {
             return new Node(key, value);
         }
         // compare, equal return, bigger right, smaller left
-        if (key.compareTo(p.key) > 0) {
+        int cmp = key.compareTo(p.key);
+        if (cmp > 0) {
             p.right = putHelper(key, value, p.right);
-        } else {
+        } else if (cmp < 0) {
             p.left = putHelper(key, value, p.left);
+        } else {
+            p.value = value;
         }
         return p;
     }
 
-    /** Inserts the key KEY
+    /** Inserts the key
      *  If it is already present, updates value to be VALUE.
      */
     @Override
