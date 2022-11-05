@@ -105,7 +105,7 @@ public class ArrayHeap<T> implements ExtrinsicPQ<T> {
         validateSinkSwimArg(index);
 
         // until become new root
-        while (index != 1) {
+        while (index > 1) {
             int p = parentIndex(index);
             // if priority is not index, stop swimming
             if (min(index, p) != index) {
@@ -131,6 +131,8 @@ public class ArrayHeap<T> implements ExtrinsicPQ<T> {
                 if (min(index, smallerIndex) != index) {
                     swap(index, smallerIndex);
                     index = smallerIndex;
+                } else {
+                    break;
                 }
             } else {
                 break;
@@ -174,13 +176,13 @@ public class ArrayHeap<T> implements ExtrinsicPQ<T> {
      */
     @Override
     public T removeMin() {
+        // get min to return
         T res = contents[1].item();
+        // swap 1st and last
         swap(1, size);
         contents[size] = null;
         size--;
-        while (min(1, 2) == 2 || min(1, 3) == 3) {
-            sink(1);
-        }
+        sink(1);
         return res;
     }
 
@@ -440,7 +442,9 @@ public class ArrayHeap<T> implements ExtrinsicPQ<T> {
         int i = 0;
         String[] expected = {"a", "b", "c", "c", "d", "d", "e", "g", "h", "i"};
         while (pq.size() > 1) {
-            assertEquals(expected[i], pq.removeMin());
+            String s = pq.removeMin();
+            System.out.println(s);
+            assertEquals(expected[i], s);
             i += 1;
         }
     }
