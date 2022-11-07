@@ -14,6 +14,17 @@ public class HashTableVisualizer {
            nicely, be sure to try
            scale = 0.5, N = 2000, M = 100. */
 
+//        double scale = 1.0;
+//        int N = 100;
+//        int M = 10;
+//
+//        HashTableDrawingUtility.setScale(scale);
+//        List<Oomage> oomies = new ArrayList<>();
+//        for (int i = 0; i < N; i += 1) {
+//           oomies.add(SimpleOomage.randomSimpleOomage());
+//        }
+//        visualize(oomies, M, scale);
+
         double scale = 1.0;
         int N = 100;
         int M = 10;
@@ -21,7 +32,7 @@ public class HashTableVisualizer {
         HashTableDrawingUtility.setScale(scale);
         List<Oomage> oomies = new ArrayList<>();
         for (int i = 0; i < N; i += 1) {
-           oomies.add(SimpleOomage.randomSimpleOomage());
+           oomies.add(ComplexOomage.randomComplexOomage());
         }
         visualize(oomies, M, scale);
     }
