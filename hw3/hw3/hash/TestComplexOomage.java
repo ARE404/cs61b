@@ -1,14 +1,22 @@
 package hw3.hash;
 
 import org.junit.Test;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
 public class TestComplexOomage {
+
+    /**
+     * Calls tests for SimpleOomage.
+     */
+    public static void main(String[] args) {
+        jh61b.junit.textui.runClasses(TestComplexOomage.class);
+    }
 
     @Test
     public void testHashCodeDeterministic() {
@@ -51,10 +59,5 @@ public class TestComplexOomage {
         deadlyList.add(new ComplexOomage(Arrays.asList(22, 12, 23, 34, 44)));
 
         assertTrue(OomageTestUtility.haveNiceHashCodeSpread(deadlyList, 10));
-    }
-
-    /** Calls tests for SimpleOomage. */
-    public static void main(String[] args) {
-        jh61b.junit.textui.runClasses(TestComplexOomage.class);
     }
 }
