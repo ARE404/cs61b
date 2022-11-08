@@ -9,7 +9,7 @@ public class PercolationStats {
     private int N;
     private Percolation p;
 
-    public PercolationStats(int t, int n, PercolationFactory pf) {
+    public PercolationStats(int n, int t, PercolationFactory pf) {
         if (t <= 0 || n <= 0) {
             throw new IllegalArgumentException("n and t should be positive");
         }
