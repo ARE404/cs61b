@@ -35,7 +35,13 @@ public class MergeSort {
     private static <Item extends Comparable> Queue<Queue<Item>>
             makeSingleItemQueues(Queue<Item> items) {
         // Your code here!
-        return null;
+        Queue<Queue<Item>> res = new Queue<>();
+        for (Item t : items) {
+            Queue<Item> T = new Queue<>();
+            T.enqueue(t);
+            res.enqueue(T);
+        }
+        return res;
     }
 
     /**
@@ -54,13 +60,47 @@ public class MergeSort {
     private static <Item extends Comparable> Queue<Item> mergeSortedQueues(
             Queue<Item> q1, Queue<Item> q2) {
         // Your code here!
-        return null;
+        Queue<Item> res = new Queue<>();
+        while (!(q1.isEmpty() && q2.isEmpty())) {
+            res.enqueue(getMin(q1, q2));
+        }
+        return res;
     }
 
     /** Returns a Queue that contains the given items sorted from least to greatest. */
     public static <Item extends Comparable> Queue<Item> mergeSort(
             Queue<Item> items) {
         // Your code here!
-        return items;
+        if (items.size() <= 1) {
+            return items;
+        }
+        Queue<Queue<Item>> qq = makeSingleItemQueues(items);
+        while (qq.size() >= 2) {
+            Queue<Item> q1 = qq.dequeue();
+            Queue<Item> q2 = qq.dequeue();
+            qq.enqueue(mergeSortedQueues(q1, q2));
+        }
+        return qq.dequeue();
+    }
+
+    public static void main(String[] args) {
+        int i = 1;
+        System.out.println(i);
+        Queue<Integer> q = new Queue<>();
+        q.enqueue(3);
+        q.enqueue(4);
+        q.enqueue(9);
+        q.enqueue(1);
+        q.enqueue(2);
+        System.out.println(q);
+        System.out.println(mergeSort(q));
+        System.out.println(makeSingleItemQueues(q));
+        Queue<Integer> q2 = new Queue<>();
+        Queue<Integer> q3 = new Queue<>();
+        q2.enqueue(1);
+        q2.enqueue(3);
+        q3.enqueue(2);
+        q3.enqueue(4);
+        System.out.println(mergeSortedQueues(q2, q3));
     }
 }
