@@ -10,7 +10,7 @@ import java.util.Map;
  */
 public class Rasterer {
     private double ullon, ullat, lrlon, lrlat, w;
-    private double depth;   // depth of the tiles.
+    private int depth;   // depth of the tiles.
     private int N;          // num of tiles in one side.
     private double mapHeight, mapWidth;
     private double tileHeight, tileWidth;
