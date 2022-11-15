@@ -71,9 +71,9 @@ public class Rasterer {
         Map<String, Object> results = new HashMap<>();
         results.put("render_grid", getGrid());
         results.put("raster_ul_lon", MapServer.ROOT_ULLON + ulP.x * tileWidth);
-        results.put("raster_ul_lat", MapServer.ROOT_ULLON + ulP.y * tileHeight);
+        results.put("raster_ul_lat", MapServer.ROOT_ULLAT - ulP.y * tileHeight);
         results.put("raster_lr_lon", MapServer.ROOT_ULLON + (lrP.x + 1) * tileWidth);
-        results.put("raster_lr_lat", MapServer.ROOT_ULLON + (lrP.y + 1) * tileHeight);
+        results.put("raster_lr_lat", MapServer.ROOT_ULLAT - (lrP.y + 1) * tileHeight);
         results.put("depth", depth);
         results.put("query_success", true);
         System.out.println("test");
@@ -152,13 +152,14 @@ public class Rasterer {
         return grid;
     }
     public static void main(String[] args) {
-//        Map<String, Double> testParam = new HashMap<>();
-//        testParam.put("ullon", -122.23995662778569);
-//        testParam.put("ullat", 37.877266154010954);
-//        testParam.put("lrlon", -122.22275132672245);
-//        testParam.put("lrlat", 37.85829260830337);
-//        testParam.put("w", 613.0);
-//        Rasterer testR = new Rasterer();
-//        testR.getMapRaster(testParam);
+        Map<String, Double> testParam = new HashMap<>();
+        testParam.put("ullon", -122.24620898026829);
+        testParam.put("ullat", 37.84502179764934);
+        testParam.put("lrlon", -122.24418112042098);
+        testParam.put("lrlat", 37.82814732636141);
+        testParam.put("w", 416.0244874617114);
+        Rasterer testR = new Rasterer();
+        testR.getMapRaster(testParam);
+        System.out.println("tset");
     }
 }
