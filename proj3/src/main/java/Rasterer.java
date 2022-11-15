@@ -1,4 +1,4 @@
-import java.awt.*;
+import java.awt.Point;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -86,13 +86,13 @@ public class Rasterer {
      * @return depth value.
      */
     private int findDepth() {
-        double QBLonDPP = LonDPP(lrlon, ullon, w);
-        double l0LonDPP = LonDPP(MapServer.ROOT_LRLON, MapServer.ROOT_ULLON, MapServer.TILE_SIZE);
+        double qbLonDPP = lonDPP(lrlon, ullon, w);
+        double l0LonDPP = lonDPP(MapServer.ROOT_LRLON, MapServer.ROOT_ULLON, MapServer.TILE_SIZE);
 
         int res = 7;
         for (int i = 1; i < 8; i++) {
             double lLonDPP = l0LonDPP / Math.pow(2, i);
-            if (lLonDPP <= QBLonDPP) {
+            if (lLonDPP <= qbLonDPP) {
                 return i;
             }
         }
@@ -102,8 +102,8 @@ public class Rasterer {
     /**
      * LonDPP calculator.
      */
-    private static double LonDPP(Double rLon, Double lLon, double Width) {
-        return (rLon - lLon) / Width;
+    private static double lonDPP(Double rLon, Double lLon, double width) {
+        return (rLon - lLon) / width;
     }
 
     /**
@@ -150,16 +150,5 @@ public class Rasterer {
             }
         }
         return grid;
-    }
-    public static void main(String[] args) {
-//        Map<String, Double> testParam = new HashMap<>();
-//        testParam.put("ullon", -122.29518870104378);
-//        testParam.put("ullat", 37.877261357322695);
-//        testParam.put("lrlon", -122.24476128704521);
-//        testParam.put("lrlat", 37.85763266602066);
-//        testParam.put("w", 895.9821709356506);
-//        Rasterer testR = new Rasterer();
-//        testR.getMapRaster(testParam);
-//        System.out.println("tset");
     }
 }
