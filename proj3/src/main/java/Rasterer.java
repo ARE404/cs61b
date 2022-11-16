@@ -120,14 +120,7 @@ public class Rasterer {
     }
 
     private int level(double value, double length) {
-        int res = 0;
-        for (int i = 0; i < N; i++) {
-            if (value <= length * (i + 1)) {
-                res = i;
-                break;
-            }
-        }
-        return res;
+        return (int) (value / length);
     }
 
     /**
