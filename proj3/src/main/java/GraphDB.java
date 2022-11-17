@@ -157,4 +157,8 @@ public class GraphDB {
     double lat(long v) {
         return 0;
     }
+
+    static class Location {
+
+    }
 }

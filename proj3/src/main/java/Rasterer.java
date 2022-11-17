@@ -9,16 +9,15 @@ import java.util.Map;
  * not draw the output correctly.
  */
 public class Rasterer {
-    private double ullon, ullat, lrlon, lrlat, w;
-    private int depth;   // depth of the tiles.
-    private int N;          // num of tiles in one side.
-    private double mapHeight, mapWidth;
-    private double tileHeight, tileWidth;
-    private Point ulP, lrP;
+    private int depth, N;   // depth of the tiles, num of tiles in depth.
+    private double tileWidth, tileHeight;
+    private Point ulP, lrP; // upper left coordinate and lower right coordinate of query box.
 
     public Rasterer() {
-        // YOUR CODE HERE
         depth = 0;
+        N = 1;
+        ulP = new Point(0, 0);
+        lrP = new Point(0, 0);
     }
 
     /**
@@ -49,34 +48,29 @@ public class Rasterer {
      * forget to set this to true on success! <br>
      */
     public Map<String, Object> getMapRaster(Map<String, Double> params) {
-        ullon = params.get("ullon");
-        ullat = params.get("ullat");
-        lrlon = params.get("lrlon");
-        lrlat = params.get("lrlat");
-        w = params.get("w");
-        mapHeight = MapServer.ROOT_ULLAT - MapServer.ROOT_LRLAT;
-        mapWidth = MapServer.ROOT_LRLON - MapServer.ROOT_ULLON;
+        double ulLon = params.get("ullon");
+        double ulLat = params.get("ullat");
+        double lrLon = params.get("lrlon");
+        double lrLat = params.get("lrlat");
+        double w = params.get("w");
 
         System.out.println(params);
 
-
-        // find appropriate scale level
-        depth = findDepth();
+        // find depth
+        depth = findDepth(lrLon, ulLon, w);
         N = (int) Math.pow(2, depth);
-        tileHeight = mapHeight / N;
-        tileWidth = mapWidth / N;
-        ulPlrP();
-
+        ulP = new Point(lonLevel(ulLon), latLevel(ulLat));
+        lrP = new Point(lonLevel(lrLon), latLevel(lrLat));
 
         Map<String, Object> results = new HashMap<>();
-        results.put("render_grid", getGrid());
-        results.put("raster_ul_lon", MapServer.ROOT_ULLON + ulP.x * tileWidth);
-        results.put("raster_ul_lat", MapServer.ROOT_ULLAT - ulP.y * tileHeight);
-        results.put("raster_lr_lon", MapServer.ROOT_ULLON + (lrP.x + 1) * tileWidth);
-        results.put("raster_lr_lat", MapServer.ROOT_ULLAT - (lrP.y + 1) * tileHeight);
         results.put("depth", depth);
+        results.put("render_grid", getGrid());
+        results.put("raster_ul_lon", getTileUlP(ulP)[0]);
+        results.put("raster_ul_lat", getTileUlP(ulP)[1]);
+        results.put("raster_lr_lon", getTileLrP(lrP)[0]);
+        results.put("raster_lr_lat", getTileLrP(lrP)[1]);
         results.put("query_success", true);
-        System.out.println("test");
+
         return results;
     }
 
@@ -85,63 +79,70 @@ public class Rasterer {
      *
      * @return depth value.
      */
-    private int findDepth() {
-        double qbLonDPP = lonDPP(lrlon, ullon, w);
+    private int findDepth(double lrLon, double ulLon, double w) {
+        double qbLonDPP = lonDPP(lrLon, ulLon, w);
         double l0LonDPP = lonDPP(MapServer.ROOT_LRLON, MapServer.ROOT_ULLON, MapServer.TILE_SIZE);
-
-        int res = 7;
         for (int i = 1; i < 8; i++) {
-            double lLonDPP = l0LonDPP / Math.pow(2, i);
-            if (lLonDPP <= qbLonDPP) {
+            double liLonDPP = l0LonDPP / Math.pow(2, i);
+            if (liLonDPP <= qbLonDPP) {
                 return i;
             }
         }
-        return res;
+        return 7;
     }
 
-    /**
-     * LonDPP calculator.
-     */
     private static double lonDPP(Double rLon, Double lLon, double width) {
         return (rLon - lLon) / width;
     }
 
-    /**
-     * return level of i.
-     */
     private int lonLevel(double lon) {
-        double length = (MapServer.ROOT_LRLON - MapServer.ROOT_ULLON) / N;
-        return level(lon - MapServer.ROOT_ULLON, length);
+        tileWidth = (MapServer.ROOT_LRLON - MapServer.ROOT_ULLON) / N;
+        int res = (int) ((lon - MapServer.ROOT_ULLON) / tileWidth);
+        return Math.min(res, N - 1);
     }
 
     private int latLevel(double lat) {
-        double length = (MapServer.ROOT_ULLAT - MapServer.ROOT_LRLAT) / N;
-        return level(MapServer.ROOT_ULLAT - lat, length);
+        tileHeight = (MapServer.ROOT_ULLAT - MapServer.ROOT_LRLAT) / N;
+        int res =  (int) ((MapServer.ROOT_ULLAT - lat) / tileHeight);
+        return Math.min(res, N - 1);
     }
 
-    private int level(double value, double length) {
-        return (int) (value / length);
+    private double[] getTileUlP(Point p) {
+        return new double[]{MapServer.ROOT_ULLON + p.x * tileWidth, MapServer.ROOT_ULLAT - p.y * tileHeight};
     }
 
-    /**
-     * set ulP and lrP.
-     */
-    private void ulPlrP() {
-        // ulP
-        ulP = new Point(lonLevel(ullon), latLevel(ullat));
-        lrP = new Point(lonLevel(lrlon), latLevel(lrlat));
+    private double[] getTileLrP(Point p) {
+        return new double[]{MapServer.ROOT_ULLON + (p.x + 1) * tileWidth, MapServer.ROOT_ULLAT - (p.y + 1) * tileHeight};
     }
 
     private String[][] getGrid() {
-        int boundWidth = lrP.x - ulP.x + 1;
-        int boundHeight  = lrP.y - ulP.y + 1;
-        String[][] grid = new String[boundHeight][boundWidth];
-        for (int i = 0; i < boundHeight; i++) {
-            for (int j = 0; j < boundWidth; j++) {
-                String adder = "d" + depth + "_x" + (j + ulP.x) + "_y" + (i + ulP.y) + ".png";
+        int qbW = lrP.x - ulP.x + 1;
+        int qbH = lrP.y - ulP.y + 1;
+        String[][] grid = new String[qbH][qbW];
+
+        // this for loop is a little tricky.
+        for (int i = 0; i < qbW; i++) {
+            for (int j = 0; j < qbH; j++) {
+                String adder = "d" + depth
+                        + "_x" + (i + ulP.x)
+                        + "_y" + (j + ulP.y)
+                        + ".png";
+                grid[j][i] = adder;
+            }
+        }
+
+        /* another version
+        for (int i = 0; i < qbH; i++) {
+            for (int j = 0; j < qbW; j++) {
+                String adder = "d" + depth
+                        + "_x" + (j + ulP.x)
+                        + "_y" + (i + ulP.y)
+                        + ".png";
                 grid[i][j] = adder;
             }
         }
+        */
+
         return grid;
     }
 }
